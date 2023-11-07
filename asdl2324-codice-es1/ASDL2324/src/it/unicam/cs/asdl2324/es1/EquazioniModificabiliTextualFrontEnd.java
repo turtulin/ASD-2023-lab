@@ -14,7 +14,7 @@ import java.io.InputStreamReader;
  */
 public class EquazioniModificabiliTextualFrontEnd {
     /*
-     * Costante piccola per il confronto di due numeri double
+     * Costante per il confronto di due numeri double
      */
     private static final double EPSILON = 1.0E-15;
 

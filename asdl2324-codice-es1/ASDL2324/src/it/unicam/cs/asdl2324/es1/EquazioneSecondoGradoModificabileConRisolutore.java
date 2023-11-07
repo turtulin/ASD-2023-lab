@@ -19,7 +19,7 @@ package it.unicam.cs.asdl2324.es1;
  */
 public class EquazioneSecondoGradoModificabileConRisolutore {
     /*
-     * Costante piccola per il confronto di due numeri double
+     * Costante per il confronto di due numeri double
      */
     private static final double EPSILON = 1.0E-15;
 
