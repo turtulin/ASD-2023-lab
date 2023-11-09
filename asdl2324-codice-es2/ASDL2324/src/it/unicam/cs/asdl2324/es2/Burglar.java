@@ -1,4 +1,4 @@
-package it.unicam.cs.asdl2324.es2sol;
+package it.unicam.cs.asdl2324.es2;
 
 /**
  * Uno scassinatore è un oggetto che prende una certa cassaforte e trova la

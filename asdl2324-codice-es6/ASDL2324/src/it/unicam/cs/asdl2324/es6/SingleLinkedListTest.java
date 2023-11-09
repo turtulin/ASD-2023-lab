@@ -12,7 +12,7 @@ class SingleLinkedListTest {
 
     @Test
     void testContains() {
-        SingleLinkedList<Integer> list = new SingleLinkedList<>();
+        SingleLinkedListAssigned<Integer> list = new SingleLinkedListAssigned<>();
         assertThrows(NullPointerException.class, () -> list.add(null));
         assertFalse(list.contains(1));
         list.add(1);
@@ -22,7 +22,7 @@ class SingleLinkedListTest {
 
     @Test
     void testAddE() {
-        SingleLinkedList<Integer> list = new SingleLinkedList<>();
+        SingleLinkedListAssigned<Integer> list = new SingleLinkedListAssigned<>();
         assertThrows(NullPointerException.class, () -> list.add(null));
 
         assertTrue(list.add(1));
@@ -43,7 +43,7 @@ class SingleLinkedListTest {
 
     @Test
     void testRemoveObject() {
-        SingleLinkedList<String> list = new SingleLinkedList<String>();
+        SingleLinkedListAssigned<String> list = new SingleLinkedListAssigned<String>();
         assertThrows(NullPointerException.class, () -> list.remove(null));
 
         assertFalse(list.remove("Pippo"));
@@ -63,7 +63,7 @@ class SingleLinkedListTest {
 
     @Test
     void testClear() {
-        SingleLinkedList<String> list = new SingleLinkedList<String>();
+        SingleLinkedListAssigned<String> list = new SingleLinkedListAssigned<String>();
         list.add("");
         list.add(" ");
         list.add("  ");
@@ -83,7 +83,7 @@ class SingleLinkedListTest {
 
     @Test
     void testGet() {
-        SingleLinkedList<String> list = new SingleLinkedList<String>();
+        SingleLinkedListAssigned<String> list = new SingleLinkedListAssigned<String>();
         assertThrows(IndexOutOfBoundsException.class, () -> list.get(0));
 
         list.add("1");
@@ -104,7 +104,7 @@ class SingleLinkedListTest {
 
     @Test
     void testSet() {
-        SingleLinkedList<String> list = new SingleLinkedList<String>();
+        SingleLinkedListAssigned<String> list = new SingleLinkedListAssigned<String>();
         list.add("0");
         assertThrows(NullPointerException.class, () -> list.set(0, null));
         assertThrows(IndexOutOfBoundsException.class,
@@ -133,7 +133,7 @@ class SingleLinkedListTest {
 
     @Test
     void testAddIntE() {
-        SingleLinkedList<String> list = new SingleLinkedList<String>();
+        SingleLinkedListAssigned<String> list = new SingleLinkedListAssigned<String>();
         assertThrows(NullPointerException.class, () -> list.add(0, null));
         assertThrows(IndexOutOfBoundsException.class, () -> list.add(1, "1"));
         assertThrows(IndexOutOfBoundsException.class, () -> list.add(-1, "2"));
@@ -161,7 +161,7 @@ class SingleLinkedListTest {
 
     @Test
     void testRemoveInt() {
-        SingleLinkedList<String> list = new SingleLinkedList<String>();
+        SingleLinkedListAssigned<String> list = new SingleLinkedListAssigned<String>();
         assertThrows(IndexOutOfBoundsException.class, () -> list.remove(0));
 
         list.add("1");
@@ -193,7 +193,7 @@ class SingleLinkedListTest {
 
     @Test
     void testIndexOf() {
-        SingleLinkedList<String> list = new SingleLinkedList<String>();
+        SingleLinkedListAssigned<String> list = new SingleLinkedListAssigned<String>();
         assertThrows(NullPointerException.class, () -> list.indexOf(null));
         assertTrue(list.indexOf("0") == -1);
 
@@ -210,7 +210,7 @@ class SingleLinkedListTest {
 
     @Test
     void testLastIndexOf() {
-        SingleLinkedList<String> list = new SingleLinkedList<String>();
+        SingleLinkedListAssigned<String> list = new SingleLinkedListAssigned<String>();
         assertThrows(NullPointerException.class, () -> list.lastIndexOf(null));
         assertTrue(list.lastIndexOf("0") == -1);
 
@@ -227,7 +227,7 @@ class SingleLinkedListTest {
     
     @Test
     final void testIterator() {
-        SingleLinkedList<Integer> sLL = new SingleLinkedList<>();
+        SingleLinkedListAssigned<Integer> sLL = new SingleLinkedListAssigned<>();
         assertThrows(NoSuchElementException.class, () -> sLL.iterator().next());
         {
             Iterator<Integer> itr = sLL.iterator();
@@ -253,7 +253,7 @@ class SingleLinkedListTest {
 
     @Test
     final void testContains1() {
-        SingleLinkedList<Integer> sLL = new SingleLinkedList<>();
+        SingleLinkedListAssigned<Integer> sLL = new SingleLinkedListAssigned<>();
         assertThrows(NullPointerException.class, () -> sLL.contains(null));
         sLL.add(0);
         sLL.add(1);
@@ -266,7 +266,7 @@ class SingleLinkedListTest {
 
     @Test
     final void testRemove() {
-        SingleLinkedList<Integer> sLL = new SingleLinkedList<>();
+        SingleLinkedListAssigned<Integer> sLL = new SingleLinkedListAssigned<>();
         sLL.add(0);
         sLL.add(1);
         for (int i = 0; i < 7; i++) {
@@ -279,7 +279,7 @@ class SingleLinkedListTest {
 
     @Test
     final void testClear1() {
-        SingleLinkedList<Integer> sLL = new SingleLinkedList<>();
+        SingleLinkedListAssigned<Integer> sLL = new SingleLinkedListAssigned<>();
         sLL.add(0);
         sLL.add(1);
         for (int i = 0; i < 7; i++) {
@@ -287,12 +287,12 @@ class SingleLinkedListTest {
         }
         sLL.clear();
         assertEquals(0, sLL.size());
-        assertEquals(new SingleLinkedList<>(), sLL);
+        assertEquals(new SingleLinkedListAssigned<>(), sLL);
     }
 
     @Test
     final void testGet1() {
-        SingleLinkedList<Integer> sLL = new SingleLinkedList<>();
+        SingleLinkedListAssigned<Integer> sLL = new SingleLinkedListAssigned<>();
         sLL.add(0);
         sLL.add(1);
         for (int i = 0; i < 7; i++) {
@@ -306,7 +306,7 @@ class SingleLinkedListTest {
 
     @Test
     final void testSet1() {
-        SingleLinkedList<Integer> sLL = new SingleLinkedList<>();
+        SingleLinkedListAssigned<Integer> sLL = new SingleLinkedListAssigned<>();
         sLL.add(0);
         sLL.add(1);
         for (int i = 0; i < 7; i++) {
@@ -320,7 +320,7 @@ class SingleLinkedListTest {
 
     @Test
     final void testAddAndRemoveAtIndex() {
-        SingleLinkedList<Integer> sLL = new SingleLinkedList<>();
+        SingleLinkedListAssigned<Integer> sLL = new SingleLinkedListAssigned<>();
         sLL.add(0);
         sLL.add(1);
         for (int i = 0; i < 7; i++) {
@@ -339,7 +339,7 @@ class SingleLinkedListTest {
 
     @Test
     final void testIndexes() {
-        SingleLinkedList<Integer> sLL = new SingleLinkedList<>();
+        SingleLinkedListAssigned<Integer> sLL = new SingleLinkedListAssigned<>();
         sLL.add(0);
         sLL.add(1);
         for (int i = 0; i < 7; i++) {
