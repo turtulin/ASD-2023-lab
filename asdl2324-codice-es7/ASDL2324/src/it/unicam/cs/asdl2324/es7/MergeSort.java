@@ -3,6 +3,7 @@
  */
 package it.unicam.cs.asdl2324.es7;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // TODO completare import
@@ -16,36 +17,61 @@ import java.util.List;
  */
 public class MergeSort<E extends Comparable<E>> implements SortingAlgorithm<E> {
 
+    public int counter;
+    
     public SortingAlgorithmResult<E> sort(List<E> l) {
-        // TODO implementare
-        return null;
+        List<E> sortedList = mergeSort(l);
+        SortingAlgorithmResult<E> result = new SortingAlgorithmResult<>(sortedList, counter);
+        return result;
     }
 
-    private void mergeSort(List<E> l, int left, int right) {
-        if(left > right || (left <= 1 && right <= 1)) {
-            throw new IllegalArgumentException("La parte sinistra deve essere più piccola di quella a destra");
+    private List<E> split(List<E> list) {
+        if(list.size() <= 1) {
+            return list;
         }
-        int middle = (left + right) / 2;
-        mergeSort(l, left, middle);
-        mergeSort(l, middle + 1, right);
-        merge(l, left, middle, right);
-    }
-
-    private void merge(List<E> l, int left, int middle, int right) {
-        int m1 = middle - left + 1;
-        int m2 = right - middle;
-        List<E> B = l.subList(left, middle);
-        List<E> C = l.subList(middle + 1, left);
-
-        int i = 1;
-        int j = 1;
-        int k = left;
-
-        while(i < m1 && j < m2) {
-            if(B.get(i).compareTo(C.get(j)) <= 0) {
-                l.set();
+        List<E> left = new ArrayList<>();
+        List<E> right = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++) {
+            if(i % 2 == 0) {
+                left.add(list.get(i));
+            }
+            else {
+                right.add(list.get(i));
             }
         }
+        List<E> result = new ArrayList<>();
+        result.addAll(left);
+        result.addAll(right);
+        return result;
+    }
+
+
+    private List<E> merge(List<E> left, List<E> right) {
+        List<E> result = new ArrayList<>();
+        while(!left.isEmpty() && !right.isEmpty()) {
+            counter++;
+            if(left.get(0).compareTo(right.get(0)) <= 0) {
+                result.add(left.remove(0));
+            }
+            else {
+                result.add(right.remove(0));
+            }
+        }
+        result.addAll(left);
+        result.addAll(right);
+        return result;
+    }
+
+    private List<E> mergeSort(List<E> list) {
+        if(list.size() <= 1) {
+            return list;
+        }
+        List<E> splitList = split(list);
+        int mid = splitList.size() / 2;
+        List<E> left = mergeSort(splitList.subList(0, mid));
+        List<E> right = mergeSort(splitList.subList(mid, splitList.size()));
+        List<E> result = merge(left, right);
+        return result;
     }
 
     public String getName() {
