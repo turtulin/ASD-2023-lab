@@ -5,7 +5,26 @@ import java.util.*;
 //TODO inserire import della Java SE che si ritengono necessari
 
 /**
- * // TODO spiegare come viene implementato il multiset.
+ * Per implementare il multiset, ho usato una HashMap<E, Integer> come struttura dati interna,
+ * dove la chiave E è l’elemento del multiset, e il valore Integer è il numero di occorrenze dell’elemento.
+ * Ho scelto di usare una HashMap perché mi permette di memorizzare gli elementi distinti del multiset
+ * e le loro occorrenze in modo efficiente e rapido, sfruttando il meccanismo di hashing.
+ * Inoltre, la HashMap non garantisce alcun ordine degli elementi, il che è coerente con
+ * la definizione di multiset.
+ * Per implementare l’iteratore, ho definito una classe interna MultisetIterator che implementa
+ * l’interfaccia Iterator<E>. Ho scelto di usare una classe interna perché mi permette di accedere
+ * ai campi e ai metodi della classe esterna MyMultiset<E>, e di definire un iteratore specifico
+ * per il multiset.
+ * Inoltre, ho scelto di implementare l’interfaccia Iterator<E> perché mi permette di restituire
+ * gli elementi del multiset uno alla volta, senza esporre la struttura dati interna, e di seguire
+ * il contratto stabilito dall’interfaccia.
+ * La classe interna MultisetIterator usa un Iterator<E> interno che itera sul keySet della HashMap interna,
+ * e una variabile che tiene conto delle occorrenze di ogni chiave. Ho scelto di usare un Iterator<E>
+ * perché mi permette di ottenere un iteratore sul Set<E> che contiene tutti gli elementi distinti
+ * del multiset, sfruttando il metodo keySet della classe HashMap.
+ * Inoltre, ho scelto di usare una variabile per le occorrenze perché mi permette di restituire
+ * gli elementi del multiset in base al loro numero di occorrenze, usando il metodo get della classe
+ * HashMap per ottenere il valore associato a ogni chiave.
  * 
  * @author Luca Tesei (template) Marta Musso marta.musso@studenti.unicam.it (implementazione)
  *
@@ -13,11 +32,6 @@ import java.util.*;
  *                il tipo degli elementi del multiset
  */
 public class MyMultiset<E> implements Multiset<E> {
-
-    // TODO inserire le variabili istanza private che si ritengono necessarie
-
-    // TODO inserire le classi interne che si ritengono necessarie
-
     // La HashMap che rappresenta il multiset
     // La chiave è l'elemento E, il valore è il numero di occorrenze
     private HashMap<E, Integer> map;
