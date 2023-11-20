@@ -122,8 +122,8 @@ public class MyMultiset<E> implements Multiset<E> {
         // Creo una variabile booleana per tenere traccia se il multiset è cambiato o no
         boolean changed = false;
         // Se il valore precedente era diverso da zero il multiset è cambiato
-        if (oldCount != 0) {
-            changed = false;
+        if (oldCount != newCount) {
+            changed = true;
         }
         if (changed) {
             this.modCount++;
@@ -168,8 +168,16 @@ public class MyMultiset<E> implements Multiset<E> {
         // Incremento o decremento il numero di elementi della differenza tra
         // il nuovo e il vecchio valore
         this.size += (count - oldCount);
-        // Incremento il numero di modifiche di uno
-        this.modCount++;
+        // Creo una variabile booleana per tenere traccia se il multiset è cambiato o no
+        boolean changed = false;
+        // Se il valore precedente era diverso dal conteggio, il multiset è cambiato
+        if (oldCount != count) {
+            changed = true;
+        }
+        // Se il multiset è cambiato, incremento il numero di modifiche strutturali
+        if (changed) {
+            this.modCount++;
+        }
         // Restituisco il valore precedente della chiave
         return oldCount;
     }
