@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class MergeSort<E extends Comparable<E>> implements SortingAlgorithm<E> {
 
-    public int counter;
+    private int counter;
     
     public SortingAlgorithmResult<E> sort(List<E> l) {
         List<E> sortedList = mergeSort(l);

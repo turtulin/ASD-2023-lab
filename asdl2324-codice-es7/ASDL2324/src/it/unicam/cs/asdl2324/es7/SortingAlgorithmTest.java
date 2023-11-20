@@ -1,18 +1,18 @@
 package it.unicam.cs.asdl2324.es7;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class SortingAlgorithmTest {
+public class SortingAlgorithmTest {
 
-    @SuppressWarnings("unchecked")
     @Test
-    final void testSort() {
+    public final void testSort() {
         List<Integer> empty = new ArrayList<Integer>();
         List<Integer> oneElement = new ArrayList<Integer>();
         oneElement.add(1);
