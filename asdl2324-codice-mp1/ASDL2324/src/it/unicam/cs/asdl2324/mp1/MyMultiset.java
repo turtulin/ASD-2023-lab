@@ -76,12 +76,11 @@ public class MyMultiset<E> implements Multiset<E> {
 
     @Override
     public int add(E element, int occurrences) {
-        /*
         // Controllo che l'elemento non sia null
         Objects.requireNonNull(element, "L'elemento non può essere null");
         // Controllo che le occorrenze non siano negative
         if (occurrences < 0) {
-            throw  new IllegalArgumentException("Le occorrenze devono essere non negative");
+            throw new IllegalArgumentException("Le occorrenze devono essere non negative");
         }
         // Controllo che le occorrenze non superino il limite massimo
         // Uso il metodo count per ottenere il numero di occorrenze attuali dell'elemento
@@ -90,33 +89,19 @@ public class MyMultiset<E> implements Multiset<E> {
         }
         // Aggiungo le occorrenze al valore associato alla chiave nella HashMap,
         // o inserisco una nuova coppia se non presente.
-        // Uso il metodo getOrDefault per ottenere il valore precedente della chiave,
-        // o zero se non è presente
-        int oldCount = this.map.getOrDefault(element, 0);
-        // Calcolo il nuovo valore sommando le occorrenze
-        int newCount = oldCount + occurrences;
-        // Uso il metodo put per aggiornare il valore associato alla chiave nella HashMap
-        this.map.put(element, newCount);
+        // Uso il metodo merge della classe HashMap, passando come chiave l'elemento,
+        // come valore di default le occorrenze, e come funzione di remapping la somma
+        // dei due valori
+        int oldCount = this.map.merge(element, occurrences, Integer::sum);
         // Aggiorno il numero totale di elementi e il numero di modifiche strutturali
         // Incremento il numero di elementi occurrences
         this.size += occurrences;
+        // Se il valore precedente era diverso dal nuovo, il multiset è cambiato
         // Incremento il numero di modifiche di uno
-        this.modCount++;
-        // Restituisco il valore precedente della chiave
-        return oldCount;
-        */
-        Objects.requireNonNull(element, "L'elemento non può essere null");
-        if (occurrences < 0) {
-            throw new IllegalArgumentException("Le occorrenze devono essere non negative");
-        }
-        if (occurrences > Integer.MAX_VALUE - this.count(element)) {
-            throw new IllegalArgumentException("Le occorrenze superano il limite massimo");
-        }
-        int oldCount = this.map.merge(element, occurrences, Integer::sum);
-        this.size += occurrences;
         if (oldCount != oldCount + occurrences) {
             this.modCount++;
         }
+        // Restituisco il valore precedente della chiave
         return oldCount;
     }
 
