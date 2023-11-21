@@ -76,6 +76,7 @@ public class MyMultiset<E> implements Multiset<E> {
 
     @Override
     public int add(E element, int occurrences) {
+        /*
         // Controllo che l'elemento non sia null
         Objects.requireNonNull(element, "L'elemento non può essere null");
         // Controllo che le occorrenze non siano negative
@@ -102,6 +103,20 @@ public class MyMultiset<E> implements Multiset<E> {
         // Incremento il numero di modifiche di uno
         this.modCount++;
         // Restituisco il valore precedente della chiave
+        return oldCount;
+        */
+        Objects.requireNonNull(element, "L'elemento non può essere null");
+        if (occurrences < 0) {
+            throw new IllegalArgumentException("Le occorrenze devono essere non negative");
+        }
+        if (occurrences > Integer.MAX_VALUE - this.count(element)) {
+            throw new IllegalArgumentException("Le occorrenze superano il limite massimo");
+        }
+        int oldCount = this.map.merge(element, occurrences, Integer::sum);
+        this.size += occurrences;
+        if (oldCount != oldCount + occurrences) {
+            this.modCount++;
+        }
         return oldCount;
     }
 
