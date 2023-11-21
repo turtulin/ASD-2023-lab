@@ -8,7 +8,6 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.HashSet;
 
-
 /**
  * Per implementare il multiset, ho usato una HashMap<E, Integer> come struttura dati interna,
  * dove la chiave E è l’elemento del multiset, e il valore Integer è il numero di occorrenze dell’elemento.
@@ -36,12 +35,13 @@ import java.util.HashSet;
  * @param <E>
  *                il tipo degli elementi del multiset
  */
+
 public class MyMultiset<E> implements Multiset<E> {
     // La HashMap che rappresenta il multiset
     // La chiave è l'elemento E, il valore è il numero di occorrenze
     private HashMap<E, Integer> map;
     // Il numero totale di elementi nel multiset, contando le occorrenze
-    // Non posso usare il metodo size() perchè estituisce il numero di chiavi
+    // Non posso usare il metodo size() perchè restituisce il numero di chiavi
     // nella HashMap, non il numero totale di elementi nel multiset.
     private int size;
     // Il numero di modifiche strutturali al multiset
@@ -52,22 +52,18 @@ public class MyMultiset<E> implements Multiset<E> {
      * Crea un multiset vuoto.
      */
     public MyMultiset() {
-        // Inizializzo la HashMap vuota
         this.map = new HashMap<>();
-        // Inizializzo il numero di elementi e di modifiche a zero
         this.size = 0;
         this.modCount = 0;
     }
 
     @Override
     public int size() {
-        // Restituisco il numero di elementi nel multiset
         return this.size;
     }
 
     @Override
     public int count(Object element) {
-        // Controllo che l'elemento non sia null
         Objects.requireNonNull(element, "L'elemento non può essere null");
         // Restituisco il valore associato alla chiave nella HashMap,
         // o zero se non presente
@@ -76,13 +72,10 @@ public class MyMultiset<E> implements Multiset<E> {
 
     @Override
     public int add(E element, int occurrences) {
-        // Controllo che l'elemento non sia null
         Objects.requireNonNull(element, "L'elemento non può essere null");
-        // Controllo che le occorrenze non siano negative
         if (occurrences < 0) {
             throw new IllegalArgumentException("Le occorrenze devono essere non negative");
         }
-        // Controllo che le occorrenze non superino il limite massimo
         // Uso il metodo count per ottenere il numero di occorrenze attuali dell'elemento
         if (occurrences > Integer.MAX_VALUE - this.count(element)) {
             throw new IllegalArgumentException("Le occorrenze superano il limite massimo");
@@ -90,33 +83,26 @@ public class MyMultiset<E> implements Multiset<E> {
         // Aggiungo le occorrenze al valore associato alla chiave nella HashMap,
         // o inserisco una nuova coppia se non presente.
         // Uso il metodo merge della classe HashMap, passando come chiave l'elemento,
-        // come valore di default le occorrenze, e come funzione di remapping la somma
-        // dei due valori
+        // come valore di default le occorrenze, e come funzione di remapping la somma dei due valori
         int oldCount = this.map.merge(element, occurrences, Integer::sum);
         // Aggiorno il numero totale di elementi e il numero di modifiche strutturali
-        // Incremento il numero di elementi occurrences
         this.size += occurrences;
         // Se il valore precedente era diverso dal nuovo, il multiset è cambiato
-        // Incremento il numero di modifiche di uno
         if (oldCount != oldCount + occurrences) {
             this.modCount++;
         }
-        // Restituisco il valore precedente della chiave
         return oldCount;
     }
 
     @Override
     public void add(E element) {
-        // Chiamo il metodo add con occurrences uguale a uno
         // Questo equivale ad aggiungere una singola occorrenza dell'elemento
         this.add(element, 1);
     }
 
     @Override
     public int remove(Object element, int occurrences) {
-        // Controllo che l'elemento non sia null
         Objects.requireNonNull(element, "L'elemento non può essere null");
-        // Controllo che le occorrenze siano non negative
         if (occurrences < 0) {
             throw new IllegalArgumentException("Le occorrenze devono essere non negative");
         }
@@ -145,13 +131,11 @@ public class MyMultiset<E> implements Multiset<E> {
         if (oldCount != newCount) {
             this.modCount++;
         }
-        // Restituisco il valore precedente della chiave
         return oldCount;
     }
 
     @Override
     public boolean remove(Object element) {
-        // Chiamo il metodo remove con occurrences uguale a uno
         // Questo equivale a rimuovere una singola occorrenza dell'elemento
         int oldCount = this.remove(element, 1);
         // Restituisco true se il valore precedente era maggiore di zero, false altrimenti
@@ -161,9 +145,7 @@ public class MyMultiset<E> implements Multiset<E> {
 
     @Override
     public int setCount(E element, int count) {
-        // Controllo che l'elemento non sia null
         Objects.requireNonNull(element, "L'elemento non può essere null");
-        // Controllo che il conteggio non sia negativo
         if (count < 0) {
             throw new IllegalArgumentException("Il conteggio deve essere non negativo");
         }
@@ -181,7 +163,6 @@ public class MyMultiset<E> implements Multiset<E> {
             // Imposto il conteggio a zero per evitare valori negativi
             count = 0;
         }
-        // Aggiorno il numero totale di elementi e il numero di modifiche strutturali
         // Incremento o decremento il numero di elementi della differenza tra
         // il nuovo e il vecchio valore
         this.size += (count - oldCount);
@@ -190,7 +171,6 @@ public class MyMultiset<E> implements Multiset<E> {
         if (oldCount != count) {
             this.modCount++;
         }
-        // Restituisco il valore precedente della chiave
         return oldCount;
     }
 
@@ -210,7 +190,6 @@ public class MyMultiset<E> implements Multiset<E> {
 
     @Override
     public boolean contains(Object element) {
-        // Controllo che l'elemento non sia null
         Objects.requireNonNull(element, "L'elemento non può essere null");
         // Restituisco true se la HashMap interna contiene la chiave element, false altrimenti
         // Uso il metodo containsKey della classe HashMap
@@ -228,7 +207,7 @@ public class MyMultiset<E> implements Multiset<E> {
 
     @Override
     public boolean isEmpty() {
-        // Restituisco tre se la HashMap interna è vuota, false altrimenti
+        // Restituisco true se la HashMap interna è vuota, false altrimenti
         // Uso il metodo isEmpty della classe HashMap
         return this.map.isEmpty();
     }
@@ -246,14 +225,14 @@ public class MyMultiset<E> implements Multiset<E> {
         if (this == obj) {
             return true;
         }
-        // Controllo se l'oggetto è un'istanza di MyMultiset
-        if (!(obj instanceof MyMultiset<?>)) {
+        // Controllo se l'oggetto è un'istanza di Multiset (???)
+        if (!(obj instanceof Multiset<?>)) {
             return false;
         }
         // Casto l'oggetto a MYMultiset
         MyMultiset<?> other = (MyMultiset<?>) obj;
         // Confronto le HashMap interne usando il metodo equals della classe HashMap
-        // Questo metodo confronta le coppie cihave valore delle due HashMap
+        // Questo metodo confronta le coppie chiave valore delle due HashMap
         // e restituisce true se sono uguali, false altrimenti
         return this.map.equals(other.map);
     }
@@ -277,7 +256,6 @@ public class MyMultiset<E> implements Multiset<E> {
         // Un iteratore per il keySet della HashMap interna
         // Questo iteratore permette di scorrere le chiavi della HashMap
         private Iterator<E> keyIterator;
-        // La chiave corrente
         private E currentKey;
         // Il numero di volte che la chiave corrente è stata restituita
         private int currentCount;
@@ -286,14 +264,12 @@ public class MyMultiset<E> implements Multiset<E> {
         // Serve per controllare la validità dell'iteratore
         private int expectedModCount;
 
-        // Costruttore dell'iteratore
+        // Costruttore dell'iteratore SCRIVI JAVADOC
         public MultisetIterator() {
             // Inizializzo l'iteratore per il keySet
             // Uso il metodo iterator della classe Set
             this.keyIterator = MyMultiset.this.map.keySet().iterator();
-            // Inizializzo la chiave corrente a null
             this.currentKey = null;
-            // Inizializzo il contatore a zero
             this.currentCount = 0;
             // Memorizzo il numero di modifiche strutturali al multiset
             // Uso la variabile modCount della classe MyMultiSet
@@ -313,6 +289,7 @@ public class MyMultiset<E> implements Multiset<E> {
 
         @Override
         public E next() {
+            /*
             // Controllo se il multiset è stato modificato strutturalmente
             // Uso il metodo checkForComodification definito in seguito
             checkForComodification();
@@ -323,6 +300,32 @@ public class MyMultiset<E> implements Multiset<E> {
             }
             // Se il contatore è zero, passo alla prossima chiave nel keyIterator
             if (this.currentCount == 0) {
+                // Uso il metodo next della classe Iterator
+                this.currentKey = this.keyIterator.next();
+                // Uso il metodo get della classe HashMap per ottenere il valore associato
+                // alla chiave corrente
+                this.currentCount = MyMultiset.this.map.get(this.currentKey);
+            }
+            // Restituisco la chiave corrente e decremento il contatore
+            this.currentCount--;
+            return this.currentKey;
+
+             */
+            // Controllo se il multiset è stato modificato strutturalmente
+            // Uso il metodo checkForComodification definito in seguito
+            checkForComodification();
+            // Controllo se ci sono ancora elementi da restituire
+            // Uso il metodo hasNext definito sopra
+            if (!hasNext()) {
+                throw new NoSuchElementException("Non ci sono più elementi");
+            }
+            // Se il contatore è zero, passo alla prossima chiave nel keyIterator
+            if (this.currentCount == 0) {
+                // Controllo se il keyIterator ha ancora chiavi da restituire
+                // Uso il metodo hasNext della classe Iterator
+                if (!this.keyIterator.hasNext()) {
+                    throw new NoSuchElementException("Non ci sono più elementi");
+                }
                 // Uso il metodo next della classe Iterator
                 this.currentKey = this.keyIterator.next();
                 // Uso il metodo get della classe HashMap per ottenere il valore associato
