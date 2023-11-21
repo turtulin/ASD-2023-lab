@@ -140,13 +140,9 @@ public class MyMultiset<E> implements Multiset<E> {
         // Aggiorno il numero totale di elementi e il numero di modifiche strutturali
         // Decremento il numero di elementi della differenza tra il vecchio e il nuovo valore
         this.size -= (oldCount - newCount);
-        // Creo una variabile booleana per tenere traccia se il multiset è cambiato o no
-        boolean changed = false;
-        // Se il valore precedente era diverso da zero il multiset è cambiato
+        // Se il valore precedente era diverso dal nunovo, il multiset è cambiato
+        // Incremento il numero di modifiche di uno
         if (oldCount != newCount) {
-            changed = true;
-        }
-        if (changed) {
             this.modCount++;
         }
         // Restituisco il valore precedente della chiave
@@ -189,14 +185,9 @@ public class MyMultiset<E> implements Multiset<E> {
         // Incremento o decremento il numero di elementi della differenza tra
         // il nuovo e il vecchio valore
         this.size += (count - oldCount);
-        // Creo una variabile booleana per tenere traccia se il multiset è cambiato o no
-        boolean changed = false;
-        // Se il valore precedente era diverso dal conteggio, il multiset è cambiato
+        // Se il valore precedente era diverso dal nunovo, il multiset è cambiato
+        // Incremento il numero di modifiche di uno
         if (oldCount != count) {
-            changed = true;
-        }
-        // Se il multiset è cambiato, incremento il numero di modifiche strutturali
-        if (changed) {
             this.modCount++;
         }
         // Restituisco il valore precedente della chiave
