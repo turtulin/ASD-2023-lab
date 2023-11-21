@@ -41,6 +41,8 @@ public class MyMultiset<E> implements Multiset<E> {
     // La chiave è l'elemento E, il valore è il numero di occorrenze
     private HashMap<E, Integer> map;
     // Il numero totale di elementi nel multiset, contando le occorrenze
+    // Non posso usare il metodo size() perchè estituisce il numero di chiavi
+    // nella HashMap, non il numero totale di elementi nel multiset.
     private int size;
     // Il numero di modifiche strutturali al multiset
     // Serve per controllare la validità dell'iteratore
