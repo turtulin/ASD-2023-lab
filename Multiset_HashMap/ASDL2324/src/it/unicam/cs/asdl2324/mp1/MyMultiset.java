@@ -27,7 +27,7 @@ import java.util.HashSet;
  * Questo mi permette di evitare di creare copie inutili di puntatori agli elementi
  * e di accedere al loro conteggio in tempo costante.
  * Un altro vantaggio è quello di poter utilizzare alcuni metodi della classe
- * HashMap, come {@code merge()},
+ * HashMap, come {@code put()}, {@code remove()} e
  * Inoltre, questa struttura dati non garantisce alcun ordine degli elementi,
  * il che è coerente con la definizione di multiset.
  * Per implementare l’iteratore, ho definito una classe interna MultisetIterator
@@ -54,8 +54,8 @@ public class MyMultiset<E> implements Multiset<E> {
     // di elementi nel multiset, contando le occorrenze.
     private int size;
     // Il numero di modifiche strutturali al multiset
-    // Serve per controllare la validità dell'iteratore
     private int modCount;
+    private int oldCount;
 
     /**
      * Crea un multiset vuoto.
@@ -64,6 +64,7 @@ public class MyMultiset<E> implements Multiset<E> {
         this.map = new HashMap<>();
         this.size = 0;
         this.modCount = 0;
+        this.oldCount = 0;
     }
 
     @Override
@@ -93,27 +94,23 @@ public class MyMultiset<E> implements Multiset<E> {
         if (occurrences < 0) {
             throw new IllegalArgumentException("Le occorrenze devono essere non negative");
         }
-        // Uso il metodo count per ottenere il numero di occorrenze attuali dell'elemento
-        if (occurrences > Integer.MAX_VALUE - this.count(element)) {
+        // Aggiorno il valore di oldCount con il valore attuale di occorrenze,
+        // possibilmente zero
+        oldCount = this.count(element);
+        if (occurrences > (Integer.MAX_VALUE - oldCount)) {
             throw new IllegalArgumentException("Le occorrenze superano il limite massimo");
         }
-        // Aggiungo le occorrenze al valore associato alla chiave nella HashMap,
-        // o inserisco una nuova coppia se non presente.
-        // Uso il metodo merge della classe HashMap, passando come chiave l'elemento,
-        // come valore di default le occorrenze, e come funzione di remapping la somma dei due valori
-        int newCount = this.map.merge(element, occurrences, Integer::sum);
-        // Aggiorno il numero totale di elementi e il numero di modifiche strutturali
+        int newCount = oldCount + occurrences;
+        // Uso il metodo put per aggiornare il valore associato alla chiave nella HashMap
+        this.map.put(element, newCount);
+        // Aggiorno il numero totale di elementi e il numero di modifiche strutturali ?????
         this.size += occurrences;
-        // Se il valore precedente era diverso dal nuovo, il multiset è cambiato
-        if (newCount != newCount + occurrences) {
-            this.modCount++;
-        }
-        return newCount - occurrences;
+        this.modCount++;
+        return oldCount;
     }
 
     @Override
     public void add(E element) {
-        // Questo equivale ad aggiungere una singola occorrenza dell'elemento
         this.add(element, 1);
     }
 
@@ -123,28 +120,18 @@ public class MyMultiset<E> implements Multiset<E> {
         if (occurrences < 0) {
             throw new IllegalArgumentException("Le occorrenze devono essere non negative");
         }
-        // Rimuovo le occorrenze al valore associato alla chiave della HashMap, se presente
-        // Uso il metodo getOrDefault per ottenere il valore precedente della chiave,
-        // o zero se non presente
-        int oldCount = this.map.getOrDefault(element, 0);
-        // Calcolo il nuovo valore sottraendo le occorrenze
+        oldCount = this.count(element);
         int newCount = oldCount - occurrences;
-        // Se il nuovo valore è zero o negativo, rimuovo la chiave della HashMap
-        // Uso il metodo remove della classe HashMap
+        // Uso il metodo remove() della classe HashMap
         if (newCount <= 0) {
             this.map.remove(element);
             // Imposto il nuovo valore a zero per evitare valori negativi
             newCount = 0;
         } else {
-            // Altrimenti aggiorno il valore associato alla chiave nella HashMap
-            // Uso il metodo put della classe HashMap
             this.map.put((E) element, newCount);
         }
         // Aggiorno il numero totale di elementi e il numero di modifiche strutturali
-        // Decremento il numero di elementi della differenza tra il vecchio e il nuovo valore
         this.size -= (oldCount - newCount);
-        // Se il valore precedente era diverso dal nunovo, il multiset è cambiato
-        // Incremento il numero di modifiche di uno
         if (oldCount != newCount) {
             this.modCount++;
         }
