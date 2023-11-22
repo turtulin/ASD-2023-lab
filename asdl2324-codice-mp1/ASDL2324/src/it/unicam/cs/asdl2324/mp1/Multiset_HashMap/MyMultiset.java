@@ -1,5 +1,11 @@
 package it.unicam.cs.asdl2324.mp1;
 
+// Potrei utilizzare:
+//      import java.util.*
+// per rendere il codice più conciso, pulito, leggibile e flessibile.
+// Tuttavia, ho scelto di utilizzare le importazioni specifiche
+// per avere un codice più esplicito e sicuro e per sapere esattamente
+// quali classi sono state importate e da dove provengono.
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -9,27 +15,29 @@ import java.util.Objects;
 import java.util.HashSet;
 
 /**
- * Per implementare il multiset, ho usato una HashMap<E, Integer> come struttura dati interna,
- * dove la chiave E è l’elemento del multiset, e il valore Integer è il numero di occorrenze dell’elemento.
- * Ho scelto di usare una HashMap perché mi permette di memorizzare gli elementi distinti del multiset
- * e le loro occorrenze in modo efficiente e rapido, sfruttando il meccanismo di hashing.
- * Inoltre, la HashMap non garantisce alcun ordine degli elementi, il che è coerente con
- * la definizione di multiset.
- * Per implementare l’iteratore, ho definito una classe interna MultisetIterator che implementa
- * l’interfaccia Iterator<E>. Ho scelto di usare una classe interna perché mi permette di accedere
- * ai campi e ai metodi della classe esterna MyMultiset<E>, e di definire un iteratore specifico
- * per il multiset.
- * Inoltre, ho scelto di implementare l’interfaccia Iterator<E> perché mi permette di restituire
- * gli elementi del multiset uno alla volta, senza esporre la struttura dati interna, e di seguire
- * il contratto stabilito dall’interfaccia.
- * La classe interna MultisetIterator usa un Iterator<E> interno che itera sul keySet della HashMap interna,
- * e una variabile che tiene conto delle occorrenze di ogni chiave. Ho scelto di usare un Iterator<E>
- * perché mi permette di ottenere un iteratore sul Set<E> che contiene tutti gli elementi distinti
- * del multiset, sfruttando il metodo keySet della classe HashMap.
- * Inoltre, ho scelto di usare una variabile per le occorrenze perché mi permette di restituire
- * gli elementi del multiset in base al loro numero di occorrenze, usando il metodo get della classe
- * HashMap per ottenere il valore associato a ogni chiave.
- * 
+ * Per rappresentare il multiset in modo efficiente dal punto di vista dello spazio,
+ * ho usato una {@code HashMap<E, Integer>} che associa ad ogni elemento E
+ * il suo numero di occorrenze nel multiset.
+ * Questo mi permette di evitare di creare copie inutili di puntatori agli elementi
+ * e di accedere al loro conteggio in tempo costante.
+ * Inoltre, questa struttura dati non garantisce alcun ordine degli elementi,
+ * il che è coerente con la definizione di multiset.
+ * Per implementare l’iteratore, ho definito una classe interna MultisetIterator
+ * perché mi permette di accedere ai campi e ai metodi della classe esterna
+ * {@code MyMultiset<E>}, e di definire un iteratore specifico per il multiset.
+ * Inoltre, ho scelto di farle implementare l’interfaccia {@code Iterator<E>} perché
+ * mi permette di restituire gli elementi del multiset uno alla volta, senza esporre
+ * la struttura dati interna, e di seguire il contratto stabilito dall’interfaccia.
+ * Dovrei aggiungere quali altre strutture dati ho valutato?
+ * LinkedHashMap per mantenere l’ordine di inserimento degli elementi.
+ * Questo ti permette di avere un iteratore più prevedibile, che restituisce gli elementi
+ * nello stesso ordine in cui sono stati inseriti nel multiset.
+ * In questo modo, rendi il codice più leggibile e comprensibile, senza perdere in efficienza.
+ * TreeMap se vuoi ordinare gli elementi in base al loro ordine naturale o a un comparatore personalizzato.
+ * Questo ti permette di avere un iteratore che restituisce gli elementi in ordine crescente o decrescente,
+ * a seconda del criterio di ordinamento scelto. In questo modo, rendi il codice più flessibile e
+ * adattabile, a costo di una maggiore complessità.
+ *
  * @author Luca Tesei (template) Marta Musso marta.musso@studenti.unicam.it (implementazione)
  *
  * @param <E>
@@ -64,6 +72,11 @@ public class MyMultiset<E> implements Multiset<E> {
 
     @Override
     public int count(Object element) {
+        // Preferisco utilizzare Objects.requireNonNull rispetto a if(element == null) throw new
+        // NullPointerException perchè il primo è un metodo statico della classe Objects che rende il codice
+        // più conciso, elegante e spreca anche meno memoria perchè richiede solo una chiamata
+        // e un messaggio opzionale, mentre il secondo richiede più codice per scrivere
+        // la condizione, creare l’eccezione e lanciarla.
         Objects.requireNonNull(element, "L'elemento non può essere null");
         // Restituisco il valore associato alla chiave nella HashMap,
         // o zero se non presente
