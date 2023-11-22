@@ -26,6 +26,8 @@ import java.util.HashSet;
  * associa ad ogni elemento E il suo numero di occorrenze nel multiset.
  * Questo mi permette di evitare di creare copie inutili di puntatori agli elementi
  * e di accedere al loro conteggio in tempo costante.
+ * Un altro vantaggio è quello di poter utilizzare alcuni metodi della classe
+ * HashMap, come {@code merge()},
  * Inoltre, questa struttura dati non garantisce alcun ordine degli elementi,
  * il che è coerente con la definizione di multiset.
  * Per implementare l’iteratore, ho definito una classe interna MultisetIterator
@@ -35,7 +37,8 @@ import java.util.HashSet;
  * mi permette di restituire gli elementi del multiset uno alla volta, senza esporre
  * la struttura dati interna, e di seguire il contratto stabilito dall’interfaccia.
  *
- * @author Luca Tesei (template) Marta Musso marta.musso@studenti.unicam.it (implementazione)
+ * @author  Luca Tesei (template)
+ *          Marta Musso marta.musso@studenti.unicam.it (implementazione)
  *
  * @param <E>
  *                il tipo degli elementi del multiset
@@ -47,7 +50,8 @@ public class MyMultiset<E> implements Multiset<E> {
     private HashMap<E, Integer> map;
     // Il numero totale di elementi nel multiset, contando le occorrenze
     // Non uso il metodo size() della classe HashMap perchè restituisce il
-    // numero di chiavi nella HashMap, non il numero totale di elementi nel multiset.
+    // numero di coppie chiave-valore nella mappa, non il numero totale
+    // di elementi nel multiset, contando le occorrenze.
     private int size;
     // Il numero di modifiche strutturali al multiset
     // Serve per controllare la validità dell'iteratore
@@ -69,14 +73,17 @@ public class MyMultiset<E> implements Multiset<E> {
 
     @Override
     public int count(Object element) {
-        // Preferisco utilizzare Objects.requireNonNull rispetto a if(element == null) throw new
-        // NullPointerException perchè il primo è un metodo statico della classe Objects che rende il codice
-        // più conciso, elegante e spreca anche meno memoria perchè richiede solo una chiamata
-        // e un messaggio opzionale, mentre il secondo richiede più codice per scrivere
-        // la condizione, creare l’eccezione e lanciarla.
+        // Preferisco utilizzare
+        //      Objects.requireNonNull(elemento, "Messaggio");
+        // rispetto a
+        //      if(elemento == null) {throw new NullPointerException("Messaggio");}
+        // perchè il primo è un metodo statico della classe Objects che rende
+        // il codice più conciso, elegante e spreca anche meno memoria perchè
+        // richiede solo una chiamata e un messaggio opzionale, mentre il secondo
+        // richiede più codice per scrivere la condizione, creare l’eccezione e lanciarla.
         Objects.requireNonNull(element, "L'elemento non può essere null");
-        // Restituisco il valore associato alla chiave nella HashMap,
-        // o zero se non presente
+        // Restituisco il valore associato alla chiave nella HashMap, ovvero le occorrenze
+        // di element, o zero se non presente
         return this.map.getOrDefault(element, 0);
     }
 
@@ -94,14 +101,14 @@ public class MyMultiset<E> implements Multiset<E> {
         // o inserisco una nuova coppia se non presente.
         // Uso il metodo merge della classe HashMap, passando come chiave l'elemento,
         // come valore di default le occorrenze, e come funzione di remapping la somma dei due valori
-        int oldCount = this.map.merge(element, occurrences, Integer::sum);
+        int newCount = this.map.merge(element, occurrences, Integer::sum);
         // Aggiorno il numero totale di elementi e il numero di modifiche strutturali
         this.size += occurrences;
         // Se il valore precedente era diverso dal nuovo, il multiset è cambiato
-        if (oldCount != oldCount + occurrences) {
+        if (newCount != newCount + occurrences) {
             this.modCount++;
         }
-        return oldCount;
+        return newCount - occurrences;
     }
 
     @Override
