@@ -15,9 +15,15 @@ import java.util.Objects;
 import java.util.HashSet;
 
 /**
- * Per rappresentare il multiset in modo efficiente dal punto di vista dello spazio,
- * ho usato una {@code HashMap<E, Integer>} che associa ad ogni elemento E
- * il suo numero di occorrenze nel multiset.
+ * Prima di iniziare la stesura del progetto, ho cercato la struttura dati ideale
+ * per implementare i multiset.
+ * Ho eseguito un'attenta valutazione e ricerca, documentandomi principalmente su
+ * <a href="^1^ https://www.geeksforgeeks.org/">GeeksforGeeks</a> e
+ * <a href="^1^ https://www.baeldung.com/">Baeldung</a>
+ * Dopodichè, basandomi anche sul contenuto del file di istruzioni del progetto,
+ * ho deciso che per rappresentare il multiset in modo efficiente dal
+ * punto di vista dello spazio, avrei usato una {@code HashMap<E, Integer>} che
+ * associa ad ogni elemento E il suo numero di occorrenze nel multiset.
  * Questo mi permette di evitare di creare copie inutili di puntatori agli elementi
  * e di accedere al loro conteggio in tempo costante.
  * Inoltre, questa struttura dati non garantisce alcun ordine degli elementi,
@@ -28,15 +34,6 @@ import java.util.HashSet;
  * Inoltre, ho scelto di farle implementare l’interfaccia {@code Iterator<E>} perché
  * mi permette di restituire gli elementi del multiset uno alla volta, senza esporre
  * la struttura dati interna, e di seguire il contratto stabilito dall’interfaccia.
- * Dovrei aggiungere quali altre strutture dati ho valutato?
- * LinkedHashMap per mantenere l’ordine di inserimento degli elementi.
- * Questo ti permette di avere un iteratore più prevedibile, che restituisce gli elementi
- * nello stesso ordine in cui sono stati inseriti nel multiset.
- * In questo modo, rendi il codice più leggibile e comprensibile, senza perdere in efficienza.
- * TreeMap se vuoi ordinare gli elementi in base al loro ordine naturale o a un comparatore personalizzato.
- * Questo ti permette di avere un iteratore che restituisce gli elementi in ordine crescente o decrescente,
- * a seconda del criterio di ordinamento scelto. In questo modo, rendi il codice più flessibile e
- * adattabile, a costo di una maggiore complessità.
  *
  * @author Luca Tesei (template) Marta Musso marta.musso@studenti.unicam.it (implementazione)
  *
@@ -49,8 +46,8 @@ public class MyMultiset<E> implements Multiset<E> {
     // La chiave è l'elemento E, il valore è il numero di occorrenze
     private HashMap<E, Integer> map;
     // Il numero totale di elementi nel multiset, contando le occorrenze
-    // Non posso usare il metodo size() perchè restituisce il numero di chiavi
-    // nella HashMap, non il numero totale di elementi nel multiset.
+    // Non uso il metodo size() della classe HashMap perchè restituisce il
+    // numero di chiavi nella HashMap, non il numero totale di elementi nel multiset.
     private int size;
     // Il numero di modifiche strutturali al multiset
     // Serve per controllare la validità dell'iteratore
