@@ -295,6 +295,9 @@ public class MyMultisetTest {
         m.add(2, 3);
         assertEquals(3, m.setCount(2, 5));
         assertEquals(5, m.count(2));
+        assertEquals(5, m.setCount(2, 0));
+        assertEquals(0, m.count(2));
+        assertEquals(0, m.setCount(2, 10));
     }
 
     @Test
@@ -614,4 +617,56 @@ public class MyMultisetTest {
         assertEquals(true, m1.equals(m2));
     }
 
+    @Test
+    public void testEqualsObject2() {
+        it.unicam.cs.asdl2324.mp1.MyMultiset<Integer> m1 = new it.unicam.cs.asdl2324.mp1.MyMultiset<Integer>();
+        m1.add(3, 5);
+        m1.setCount(2, 3);
+        it.unicam.cs.asdl2324.mp1.MyMultiset<Integer> m2 = new it.unicam.cs.asdl2324.mp1.MyMultiset<Integer>();
+        m2.add(5, 3);
+        m2.setCount(3, 2);
+        assertEquals(false, m1.equals(m2));
+    }
+
+    @Test
+    public void TestHashcode() {
+        it.unicam.cs.asdl2324.mp1.MyMultiset<Integer> m1 = new it.unicam.cs.asdl2324.mp1.MyMultiset<Integer>();
+        m1.add(3, 5);
+        m1.setCount(4, 7);
+        m1.setCount(5, 9);
+        it.unicam.cs.asdl2324.mp1.MyMultiset<Integer> m2 = new it.unicam.cs.asdl2324.mp1.MyMultiset<Integer>();
+        m2.add(5, 9);
+        m2.add(3);
+        m2.setCount(3, 5);
+        m2.add(4);
+        m2.add(4, 6);
+        assertEquals(true, m1.hashCode() == m2.hashCode());
+    }
+
+    @Test
+    public void TestHashcode2() {
+        it.unicam.cs.asdl2324.mp1.MyMultiset<Integer> m1 = new it.unicam.cs.asdl2324.mp1.MyMultiset<Integer>();
+        m1.add(3, 5);
+        m1.setCount(2, 3);
+        it.unicam.cs.asdl2324.mp1.MyMultiset<Integer> m2 = new it.unicam.cs.asdl2324.mp1.MyMultiset<Integer>();
+        m2.add(5, 3);
+        m2.setCount(3, 2);
+        assertEquals(false, m1.hashCode() == m2.hashCode());
+    }
+
+    @Test
+    public void TestEqualsHashcode() {
+        it.unicam.cs.asdl2324.mp1.MyMultiset<Integer> m1 = new it.unicam.cs.asdl2324.mp1.MyMultiset<Integer>();
+        m1.add(3, 5);
+        m1.setCount(4, 7);
+        m1.setCount(5, 9);
+        it.unicam.cs.asdl2324.mp1.MyMultiset<Integer> m2 = new it.unicam.cs.asdl2324.mp1.MyMultiset<Integer>();
+        m2.add(5, 9);
+        m2.add(3);
+        m2.setCount(3, 5);
+        m2.add(4);
+        m2.add(4, 6);
+        assertEquals(true, m1.equals(m2));
+        assertEquals(true, m1.hashCode() == m2.hashCode());
+    }
 }
