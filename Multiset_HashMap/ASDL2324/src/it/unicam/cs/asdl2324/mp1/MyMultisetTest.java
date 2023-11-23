@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Classe di test per MyMultiset
- * 
+ *
  * @author Luca Tesei
  *
  */
@@ -97,17 +97,17 @@ public class MyMultisetTest {
         assertThrows(IllegalArgumentException.class, () -> m.add(3, 1));
     }
 
-//    @Test
-//    public void testAddEfficientSpaceRepresentation() {
-//        MyMultiset<Integer> m = new MyMultiset<Integer>();
-//        for (int i = 0; i <= 120000; i++)
-//            m.add(i, Integer.MAX_VALUE);
-//        /*
-//         * Con una rappresentazione non compatta a questo punto dovrebbero
-//         * essere stati consumati circa 14 GB di memoria, e quindi probabilmente
-//         * viene lanciata una OutOfMemoryException e il test fallisce
-//         */
-//    }
+    @Test
+    public void testAddEfficientSpaceRepresentation() {
+        MyMultiset<Integer> m = new MyMultiset<Integer>();
+        for (int i = 0; i <= 120000; i++)
+            m.add(i, Integer.MAX_VALUE);
+        /*
+         * Con una rappresentazione non compatta a questo punto dovrebbero
+         * essere stati consumati circa 14 GB di memoria, e quindi probabilmente
+         * viene lanciata una OutOfMemoryException e il test fallisce
+         */
+    }
 
     @Test
     public void testAddEIntAddZeroNoElement() {
@@ -430,6 +430,7 @@ public class MyMultisetTest {
         assertEquals(false, itr.hasNext());
     }
 
+
     @Test
     public void testIteratorFailFastAddCount() {
         it.unicam.cs.asdl2324.mp1.MyMultiset<Integer> m = new it.unicam.cs.asdl2324.mp1.MyMultiset<Integer>();
@@ -440,6 +441,19 @@ public class MyMultisetTest {
         assertEquals(i, 1);
         // Modifica il multiset
         m.add(2, 4);
+        // Continuo l'iterazione
+        assertThrows(ConcurrentModificationException.class, () -> itr.next());
+    }
+
+    @Test
+    public void testIteratorFailFastAddCount1() {
+        it.unicam.cs.asdl2324.mp1.MyMultiset<Integer> m = new it.unicam.cs.asdl2324.mp1.MyMultiset<Integer>();
+        m.add(1, 3);
+        Iterator<Integer> itr = m.iterator();
+        assertTrue(itr.hasNext());
+        Integer i = itr.next();
+        assertEquals(i, 1);
+        m.setCount(1, 0);
         // Continuo l'iterazione
         assertThrows(ConcurrentModificationException.class, () -> itr.next());
     }
@@ -669,4 +683,6 @@ public class MyMultisetTest {
         assertEquals(true, m1.equals(m2));
         assertEquals(true, m1.hashCode() == m2.hashCode());
     }
+
 }
+
