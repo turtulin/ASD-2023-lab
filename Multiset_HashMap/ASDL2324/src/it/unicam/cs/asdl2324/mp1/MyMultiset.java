@@ -6,13 +6,7 @@ package it.unicam.cs.asdl2324.mp1;
 // Tuttavia, ho scelto di utilizzare le importazioni specifiche
 // per avere un codice più esplicito e sicuro e per sapere esattamente
 // quali classi sono state importate e da dove provengono.
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.ConcurrentModificationException;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * Prima di iniziare la stesura del progetto, ho cercato la struttura dati ideale
@@ -45,9 +39,9 @@ import java.util.HashSet;
  */
 
 public class MyMultiset<E> implements Multiset<E> {
-    // La HashMap che rappresenta il multiset.
+    // Map che rappresenta il multiset.
     // La chiave è l'elemento E, il valore è il numero di occorrenze.
-    private HashMap<E, Integer> map;
+    private Map<E, Integer> map;
     // Il numero totale di elementi nel multiset, contando le occorrenze
     // Non uso il metodo size() della classe HashMap perchè restituisce il
     // numero di coppie chiave-valore nella mappa, non il numero totale

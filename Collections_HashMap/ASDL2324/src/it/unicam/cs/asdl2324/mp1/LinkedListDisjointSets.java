@@ -1,9 +1,6 @@
 package it.unicam.cs.asdl2324.mp1;
 
-import java.util.Objects;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * La classe che implementa l'interfaccia {@code DisjointSets} usando le liste concatenate
@@ -16,11 +13,14 @@ import java.util.HashMap;
  *          Marta Musso marta.musso@studenti.unicam.it (implementazione)
  *
  */
+
+
 public class LinkedListDisjointSets implements DisjointSets {
     // La mappa che associa ad ogni elemento il suo rappresentante
     private HashMap<DisjointSetElement, DisjointSetElement> map;
     // Il set dei rappresentanti degli insiemi disgiunti attualmente presenti
     private HashSet<DisjointSetElement> representatives;
+    private Set<List<MyIntLinkedListDisjointSetElement>> insieme;
 
     /**
      * Crea una collezione vuota di insiemi disgiunti.
