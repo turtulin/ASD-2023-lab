@@ -3,7 +3,7 @@ package it.unicam.cs.asdl2324.mp1;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -20,13 +20,13 @@ import java.util.Set;
 
 
 public class LinkedListDisjointSets implements DisjointSets {
-    private HashMap<DisjointSetElement, DisjointSetElement> map;
+    private Map<DisjointSetElement, DisjointSetElement> map;
 
     /**
      * Crea una collezione vuota di insiemi disgiunti.
      */
     public LinkedListDisjointSets() {
-        this.map = new LinkedHashMap<>();
+        this.map = new HashMap<>();
     }
 
     /*
@@ -127,7 +127,6 @@ public class LinkedListDisjointSets implements DisjointSets {
     @Override
     public Set<DisjointSetElement> getCurrentRepresentatives() {
         return this.map.keySet();
-        //return this.representatives;
     }
 
     @Override

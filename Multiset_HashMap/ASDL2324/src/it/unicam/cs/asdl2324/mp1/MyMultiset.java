@@ -1,12 +1,13 @@
 package it.unicam.cs.asdl2324.mp1;
 
-// Potrei utilizzare:
-//      import java.util.*;
-// per rendere il codice più conciso, pulito, leggibile e flessibile.
-// Tuttavia, ho scelto di utilizzare le importazioni specifiche
-// per avere un codice più esplicito e sicuro e per sapere esattamente
-// quali classi sono state importate e da dove provengono.
-import java.util.*;
+import java.util.Map;
+import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.NoSuchElementException;
+import java.util.ConcurrentModificationException;
+import java.util.Objects;
 
 /**
  * Prima di iniziare la stesura del progetto, ho cercato la struttura dati ideale
@@ -39,16 +40,14 @@ import java.util.*;
  */
 
 public class MyMultiset<E> implements Multiset<E> {
-    // Map che rappresenta il multiset.
     // La chiave è l'elemento E, il valore è il numero di occorrenze.
     private Map<E, Integer> map;
-    // Il numero totale di elementi nel multiset, contando le occorrenze
+    // Il numero totale di elementi nel multiset, contando le occorrenze.
     // Non uso il metodo size() della classe HashMap perchè restituisce il
     // numero di coppie chiave-valore nella mappa, non il numero totale
-    // di elementi nel multiset, contando le occorrenze.
+    // di elementi comprese le occorrenze.
     private int size;
     // Il numero di modifiche strutturali al multiset.
-    // Lo utilizzo per verificare la validità dell'iteratore.
     private int modCount;
 
     /**
@@ -168,7 +167,7 @@ public class MyMultiset<E> implements Multiset<E> {
     public boolean contains(Object element) {
         if (element == null) throw new NullPointerException("L'elemento non può essere null");
         // Uso l'iteratore definito dalla classe MultisetIterator per scorrere tutti gli
-        // elementi della
+        // elementi della mappa.
         MultisetIterator itr = new MultisetIterator();
         while (itr.hasNext()) {
             if (itr.next().equals(element)) return true;
@@ -189,7 +188,7 @@ public class MyMultiset<E> implements Multiset<E> {
     @Override
     public boolean isEmpty() {
         // Approfitto dell'esistenza della variabile size che mi permette di
-        // evitare l'utilizzo di metodi come isEmpty dell'interfaccia Map
+        // evitare l'utilizzo di metodi come isEmpty() dell'interfaccia Map
         return this.size == 0;
     }
 
@@ -201,12 +200,12 @@ public class MyMultiset<E> implements Multiset<E> {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || !(o instanceof MyMultiset<?>)) return false;
-        MyMultiset<?> that = (MyMultiset<?>) o;
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || !(obj instanceof MyMultiset<?>)) return false;
+        MyMultiset<?> that = (MyMultiset<?>) obj;
         // Utilizzare questo controllo mi fa risparmiare tempo e memoria rispetto
-        // all'utilizzo di un iteratore
+        // all'utilizzo di un iteratore.
         return size == that.size && Objects.equals(map, that.map);
     }
 

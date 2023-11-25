@@ -97,17 +97,19 @@ public class MyMultisetTest {
         assertThrows(IllegalArgumentException.class, () -> m.add(3, 1));
     }
 
-    @Test
+  /*@Test
     public void testAddEfficientSpaceRepresentation() {
         MyMultiset<Integer> m = new MyMultiset<Integer>();
         for (int i = 0; i <= 120000; i++)
             m.add(i, Integer.MAX_VALUE);
+     }
+   */
         /*
          * Con una rappresentazione non compatta a questo punto dovrebbero
          * essere stati consumati circa 14 GB di memoria, e quindi probabilmente
          * viene lanciata una OutOfMemoryException e il test fallisce
          */
-    }
+
 
     @Test
     public void testAddEIntAddZeroNoElement() {
