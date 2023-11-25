@@ -1,25 +1,34 @@
 package it.unicam.cs.asdl2324.mp1;
 
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * La classe che implementa l'interfaccia {@code DisjointSets} usando le liste concatenate
- * per rappresentare gli insiemi disgiunti.
- * Per memorizzare e manipolare gli insiemi disgiunti, usa una mappa che associa ad ogni
- * elemento il suo rappresentante e un set che contiene tutti i rappresentanti
- * degli insiemi disgiunti attualmente presenti.
+ * Anche in questo caso, prima di iniziare la stesura del progetto, mi sono
+ * documentata riguardo le strutture dati più efficienti per rappresentare
+ * set di insiemi disgiunti.
+ * Ho quindi deciso di usare una HashMap che associa al valore un insieme disgiunto
+ * composto da elementi che mantengono la loro struttura di LinkedList tramite gli
+ * appositi puntatori il cui comportamento è definito nell'interfaccia
+ * {@code DisjointSetElement}, e alla chiave il suo  elemento rappresentante di
+ * tipo {@code DisjointSetElement}.
+ *
+ * Questo tipo di rappresentazione rende più efficiente la ricerca dei
+ * rappresentanti e anche dei valori contenuti all'interno dei singoli
+ * insiemi disgiunti.
+ * Inoltre, ho potuto sfruttare alcuni metodi della classe HashMap, come
+ * {@code keySet()} che mi permettono di evitare, ad esempio, di inizializzare
+ * un set apposito per contenere tutti i rappresentanti.
  *
  * @author  Luca Tesei (template)
- *          Marta Musso marta.musso@studenti.unicam.it (implementazione)
+ *      MARTA MUSSO marta.musso@studenti.unicam.it (implementazione)
  *
  */
 
-
 public class LinkedListDisjointSets implements DisjointSets {
+    // La Map che associa un rappresentante al suo insieme.
     private Map<DisjointSetElement, DisjointSetElement> map;
 
     /**
@@ -54,6 +63,8 @@ public class LinkedListDisjointSets implements DisjointSets {
         e.setRef1(e);
         e.setRef2(null);
         e.setNumber(1);
+        // Il primo elemento inserito nella HashMap sarà la chiave (rappresentante)
+        // ma anche il primo valore nella LinkedList
         this.map.put(e, e);
     }
 
@@ -91,9 +102,12 @@ public class LinkedListDisjointSets implements DisjointSets {
                 ("Tentativo di unire due insiemi disgiunti con almeno un elemento null");
         if (!this.isPresent(e1) || !this.isPresent(e2)) throw new IllegalArgumentException
                 ("Tentativo di unire due insiemi disgiunti con almeno un elemento non presente");
+        // Ottengo i rappresentanti degli insiemi di cui fanno parte e1 ed e2.
         DisjointSetElement r1 = e1.getRef1();
         DisjointSetElement r2 = e2.getRef1();
+        // Se fanno parte dello stesso insieme, non faccio niente.
         if (r1 == r2) return;
+        // Ottengo la cardinalità degli insiemi rappresentati da r1 e r2.
         int c1 = r1.getNumber();
         int c2 = r2.getNumber();
         if (c1 >= c2) {
@@ -107,25 +121,37 @@ public class LinkedListDisjointSets implements DisjointSets {
     }
 
     /**
+     * Unisce due insiemi disgiunti, accondando r2 a r1.
      * @param r1
+     *                  la chiave dell'insieme con cardinalità maggiore
      * @param r2
+     *                  la chiave dell'insieme con cardinalità minore
      */
+    // Definisco questo metodo per evitare blocchi di codice ripetuti
+    // nel metodo union() e renderlo più chiaro e pulito.
     private void merge (DisjointSetElement r1, DisjointSetElement r2) {
         DisjointSetElement current = r2;
+        // Scorro tutti gli elementi dell'insieme rappresentato da r2,
+        // aggiornando il loro puntatore ref1 a r1.
         while (current != null) {
             current.setRef1(r1);
             current = current.getRef2();
         }
         DisjointSetElement last = r1;
+        // Scorro tutti gli elementi dell'insieme rappresentato da r1
+        // fino ad arrivare all'ultimo.
         while (last.getRef2() != null) {
             last = last.getRef2();
         }
+        // Aggiorno il puntatore ref2 dell'ultimo elemento dell'insieme
+        // rappresentato da r1 a r2.
         last.setRef2(r2);
         this.map.remove(r2);
     }
 
     @Override
     public Set<DisjointSetElement> getCurrentRepresentatives() {
+        // Ritorno il set di tutte le chiavi contenute nella HashMap.
         return this.map.keySet();
     }
 
@@ -135,8 +161,11 @@ public class LinkedListDisjointSets implements DisjointSets {
                 ("Tentativo di ottenere gli elementi di un insieme disgiunto contenente un elemento null");
         if (!this.isPresent(e)) throw new IllegalArgumentException
                 ("Tentativo di ottenere gli elementi di un insieme disgiunto contenente un elemento non presente");
+        // L'HashSet che conterrà tutti gli elementi dell'insieme.
         Set<DisjointSetElement> result = new HashSet<>();
+        // Il rappresentante dell'insieme di cui fa parte e.
         DisjointSetElement r = e.getRef1();
+        // Scorro tutti gli elementi e li aggiungo all'HashSet creato prima.
         while (r != null) {
             result.add(r);
             r = r.getRef2();
@@ -150,6 +179,9 @@ public class LinkedListDisjointSets implements DisjointSets {
                 ("Tentativo di ottenere la cardinalità di un insieme disgiunto contenente un elemento null");
         if(!this.isPresent(e)) throw new IllegalArgumentException
                 ("Tentativo di ottenere la cardinalità di un insieme disgiunto contenente un elemento non presente");
+        // Per ottenere la cardinalità dell'insieme di cui fa parte e, è sufficiente trovare
+        // il suo rappresentante e richiamare il metodo getNumber() che fornisce il valore della
+        // dimensione dell'insieme associato alla chiave.
         return e.getRef1().getNumber();
     }
 }
