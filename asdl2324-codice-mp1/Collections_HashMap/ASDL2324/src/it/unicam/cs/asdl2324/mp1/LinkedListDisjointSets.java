@@ -45,7 +45,6 @@ public class LinkedListDisjointSets implements DisjointSets {
      */
     @Override
     public boolean isPresent(DisjointSetElement e) {
-        if (e == null) throw new NullPointerException("Tentativo di verificare la presenza di un elemento null");
         return e.getRef1() != null;
     }
 
