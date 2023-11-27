@@ -74,7 +74,7 @@ public class LinkedListDisjointSets implements DisjointSets {
      */
     @Override
     public DisjointSetElement findSet(DisjointSetElement e) {
-        if ( e == null) throw new NullPointerException
+        if (e == null) throw new NullPointerException
                 ("Tentativo di trovare il rappresentante di un elemento null");
         if (!this.isPresent(e)) throw new IllegalArgumentException
                 ("Tentativo di trovare il rappresentante di un elemento non presente");
@@ -97,7 +97,7 @@ public class LinkedListDisjointSets implements DisjointSets {
      */
     @Override
     public void union(DisjointSetElement e1, DisjointSetElement e2) {
-        if ( e1 == null || e2 == null) throw new NullPointerException
+        if (e1 == null || e2 == null) throw new NullPointerException
                 ("Tentativo di unire due insiemi disgiunti con almeno un elemento null");
         if (!this.isPresent(e1) || !this.isPresent(e2)) throw new IllegalArgumentException
                 ("Tentativo di unire due insiemi disgiunti con almeno un elemento non presente");
@@ -174,7 +174,7 @@ public class LinkedListDisjointSets implements DisjointSets {
 
     @Override
     public int getCardinalityOfSetContaining(DisjointSetElement e) {
-        if ( e == null) throw new NullPointerException
+        if (e == null) throw new NullPointerException
                 ("Tentativo di ottenere la cardinalità di un insieme disgiunto contenente un elemento null");
         if(!this.isPresent(e)) throw new IllegalArgumentException
                 ("Tentativo di ottenere la cardinalità di un insieme disgiunto contenente un elemento non presente");

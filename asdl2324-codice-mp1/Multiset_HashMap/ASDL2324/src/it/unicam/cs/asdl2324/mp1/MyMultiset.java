@@ -88,7 +88,7 @@ public class MyMultiset<E> implements Multiset<E> {
         if (occurrences > (Integer.MAX_VALUE - oldCount))
             throw new IllegalArgumentException("Le occorrenze superano il limite massimo");
         // Uso il metodo put per aggiornare il valore associato alla chiave nella HashMap.
-        this.map.put(element, oldCount +  occurrences);
+        this.map.put(element, oldCount + occurrences);
         // Aggiorno il numero totale di elementi e il numero di modifiche strutturali
         // solo se è stato modificato il numero di occorrenze.
         this.size += occurrences;
@@ -123,7 +123,6 @@ public class MyMultiset<E> implements Multiset<E> {
 
     @Override
     public boolean remove(Object element) {
-        if (element == null) throw new NullPointerException("L'elemento non può essere null");
         // Il metodo ritorna true se oldCount (valore ritornato da remove())
         // era maggiore di zero e quindi element apparteneva alla HashMap ed
         // è stata rimossa un'occorrenza, false altrimenti.
@@ -243,7 +242,7 @@ public class MyMultiset<E> implements Multiset<E> {
         @Override
         public boolean hasNext() {
             // Controllo che il multiset non sia stato modificato.
-            checkForComodification();
+            checkModification();
             // Il metodo ritorna true se esiste una chiave successiva non null alla currentKey,
             // oppure se la currentKey ha ancora delle occorrenze da iterare
             // (e di conseguenza il numero delle sue occorrenze iterate è maggiore di zero).
@@ -253,7 +252,7 @@ public class MyMultiset<E> implements Multiset<E> {
         @Override
         public E next() {
             // Controllo che il multiset non sia stato modificato.
-            checkForComodification();
+            checkModification();
             if (!hasNext()) {
                 throw new NoSuchElementException("Non ci sono più elementi");
             }
@@ -281,7 +280,7 @@ public class MyMultiset<E> implements Multiset<E> {
         /**
          * Lancia un'eccezione se il multiset è stato modificato strutturalmente.
          */
-        private void checkForComodification() {
+        private void checkModification() {
             // Controllo se il numero di modifiche strutturali al multiset è diverso
             // da quello memorizzato alla creazione dell'iteratore.
             if (MyMultiset.this.modCount != this.itrModCount) {
