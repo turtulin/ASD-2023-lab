@@ -3,9 +3,7 @@
  */
 package it.unicam.cs.asdl2223.es10;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Realizza un insieme tramite una tabella hash con indirizzamento primario (la
@@ -124,21 +122,24 @@ public class CollisionListResizableHashTable<E> implements Set<E> {
     }
 
     @Override
-    public boolean contains(Object o) {
-        // TODO implementare
-        /*
-         * ATTENZIONE: usare l'hashCode dell'oggetto e la funzione di hash
-         * primaria passata all'atto della creazione: il bucket in cui cercare
-         * l'oggetto o è la posizione
-         * this.phf.hash(o.hashCode(),this.getCurrentCapacity)
-         * 
-         * In questa posizione, se non vuota, si deve cercare l'elemento o
-         * utilizzando il metodo equals() su tutti gli elementi della lista
-         * concatenata lì presente
-         * 
-         */
+    public boolean contains(Object element) {
+        if (element == null) {
+            throw new NullPointerException("Element cannot be null");
+        }
+        int index = Math.abs(element.hashCode() % table.length);
+        if (table[index] == null) {
+            return false;
+        }
+        Node<E> node = (Node<E>) table[index];
+        while (node != null) {
+            if (node.item.equals(element)) {
+                return true;
+            }
+            node = node.next;
+        }
         return false;
     }
+
 
     @Override
     public Iterator<E> iterator() {
@@ -157,22 +158,26 @@ public class CollisionListResizableHashTable<E> implements Set<E> {
 
     @Override
     public boolean add(E e) {
-        // TODO implementare
-        /*
-         * ATTENZIONE: usare l'hashCode dell'oggetto e la funzione di hash
-         * primaria passata all'atto della creazione: il bucket in cui inserire
-         * l'oggetto o è la posizione
-         * this.phf.hash(o.hashCode(),this.getCurrentCapacity)
-         * 
-         * In questa posizione, se non vuota, si deve inserire l'elemento o
-         * nella lista concatenata lì presente. Se vuota, si crea la lista
-         * concatenata e si inserisce l'elemento, che sarà l'unico.
-         * 
-         */
-        // ATTENZIONE, si inserisca prima il nuovo elemento e poi si controlli
-        // se bisogna fare resize(), cioè se this.size >
-        // this.getCurrentThreshold()
-        return false;
+        if (e == null) {
+            throw new NullPointerException("Element cannot be null");
+        }
+        if (contains(e)) {
+            return false;
+        }
+        int index = Math.abs(e.hashCode() % table.length);
+        Node<E> node = new Node<>(e, null);
+        if (table[index] == null) {
+            table[index] = node;
+        } else {
+            node.next = (Node<E>) table[index];
+            table[index] = node;
+        }
+        size++;
+        modCount++;
+        if (size > getCurrentThreshold()) {
+            resize();
+        }
+        return true;
     }
 
     /*
@@ -180,43 +185,78 @@ public class CollisionListResizableHashTable<E> implements Set<E> {
      * chiamare quando this.size diventa maggiore di getCurrentThreshold()
      */
     private void resize() {
-        // TODO implementare
-    }
+            Object[] oldTable = table;
+            table = new Object[oldTable.length * 2];
+            size = 0;
+            for (Object bucket : oldTable) {
+                if (bucket != null) {
+                    Node<E> node = (Node<E>) bucket;
+                    while (node != null) {
+                        add(node.item);
+                        node = node.next;
+                    }
+                }
+            }
+        }
 
-    @Override
+
+        @Override
     public boolean remove(Object o) {
-        // TODO implementare
-        /*
-         * ATTENZIONE: usare l'hashCode dell'oggetto e la funzione di hash
-         * primaria passata all'atto della creazione: il bucket in cui cercare
-         * l'oggetto o è la posizione
-         * this.phf.hash(o.hashCode(),this.getCurrentCapacity)
-         * 
-         * In questa posizione, se non vuota, si deve cercare l'elemento o
-         * utilizzando il metodo equals() su tutti gli elementi della lista
-         * concatenata lì presente. Se presente, l'elemento deve essere
-         * eliminato dalla lista concatenata
-         * 
-         */
-        // ATTENZIONE: la rimozione, in questa implementazione, **non** comporta
-        // mai una resize "al ribasso", cioè un dimezzamento della tabella se si
-        // scende sotto il fattore di bilanciamento desiderato.
-        return false;
-    }
+            if (o == null) {
+                throw new NullPointerException("Element cannot be null");
+            }
+            int index = Math.abs(o.hashCode() % table.length);
+            if (table[index] == null) {
+                return false;
+            }
+            Node<E> node = (Node<E>) table[index];
+            Node<E> prev = null;
+            while (node != null) {
+                if (node.item.equals(o)) {
+                    if (prev == null) {
+                        table[index] = node.next;
+                    } else {
+                        prev.next = node.next;
+                    }
+                    size--;
+                    modCount++;
+                    return true;
+                }
+                prev = node;
+                node = node.next;
+            }
+            return false;
+        }
+
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        // TODO implementare
-        // utilizzare un iteratore della collection e chiamare il metodo
-        // contains
-        return false;
+        for (Object element : c) {
+            if (element == null) {
+                throw new NullPointerException("Collection cannot contain null elements");
+            }
+        }
+        for (Object element : c) {
+            if (!contains(element)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        // TODO implementare
-        // utilizzare un iteratore della collection e chiamare il metodo add
-        return false;
+        if (c == null) {
+            throw new NullPointerException("Collection cannot be null");
+        }
+        boolean modified = false;
+        for (E element : c) {
+            boolean added = add(element);
+            if (added) {
+                modified = true;
+            }
+        }
+        return modified;
     }
 
     @Override
@@ -226,9 +266,19 @@ public class CollisionListResizableHashTable<E> implements Set<E> {
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        // TODO implementare
-        // utilizzare un iteratore della collection e chiamare il metodo remove
-        return false;
+        for (Object element : c) {
+            if (element == null) {
+                throw new NullPointerException("Collection cannot contain null elements");
+            }
+        }
+        boolean modified = false;
+        for (Object element : c) {
+            boolean removed = remove(element);
+            if (removed) {
+                modified = true;
+            }
+        }
+        return modified;
     }
 
     @Override
@@ -267,28 +317,52 @@ public class CollisionListResizableHashTable<E> implements Set<E> {
      * creato.
      */
     private class Itr implements Iterator<E> {
-
-        // TODO inserire le variabili che servono
-
         private int numeroModificheAtteso;
+        private int currentIndex;
+        private Node<E> currentNode;
+        private Node<E> previousNode;
 
         private Itr() {
-            // TODO implementare il resto
-            this.numeroModificheAtteso = modCount;
+            numeroModificheAtteso = modCount;
+            currentIndex = 0;
+            currentNode = findNextNode();
+            previousNode = null;
+        }
+
+        private Node<E> findNextNode() {
+            while (currentIndex < table.length) {
+                if (table[currentIndex] == null) {
+                    currentIndex++;
+                } else {
+                    return (Node<E>) table[currentIndex];
+                }
+            }
+            return null;
         }
 
         @Override
         public boolean hasNext() {
-            // TODO implementare
-            return false;
+            return currentNode != null;
         }
 
         @Override
         public E next() {
-            // TODO implementare
-            return null;
+            if (modCount != numeroModificheAtteso) {
+                throw new ConcurrentModificationException("Iterator modified inconsistently");
+            }
+            if (!hasNext()) {
+                throw new NoSuchElementException("No more elements");
+            }
+            Node<E> temp = currentNode;
+            previousNode = currentNode;
+            if (currentNode.next != null) {
+                currentNode = currentNode.next;
+            } else {
+                currentIndex++;
+                currentNode = findNextNode();
+            }
+            return temp.item;
         }
-
     }
 
     /*
