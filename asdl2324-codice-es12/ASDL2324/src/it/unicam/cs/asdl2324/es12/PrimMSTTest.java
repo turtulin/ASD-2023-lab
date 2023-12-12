@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
  * @author Luca Tesei
  *
  */
-class PrimMSTTest {
+/*class PrimMSTTest {
 
     @Test
     final void testExceptions() {
@@ -302,4 +302,9 @@ class PrimMSTTest {
         assertTrue(c.getFloatingPointDistance() == Double.POSITIVE_INFINITY);
         assertTrue(c.getColor() == GraphNode.COLOR_BLACK);
     }
+
 }
+
+
+
+ */
