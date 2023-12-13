@@ -25,8 +25,6 @@ public class KruskalMST<L> {
      * dall'algoritmo di Kruskal.
      */
     private ForestDisjointSets<GraphNode<L>> disjointSets;
-    // Una lista di archi ordinati per peso crescente
-    private List<GraphEdge<L>> sortedEdges;
 
     /**
      * Costruisce un calcolatore di un albero di copertura minimo che usa
@@ -34,7 +32,6 @@ public class KruskalMST<L> {
      */
     public KruskalMST() {
         this.disjointSets = new ForestDisjointSets<GraphNode<L>>();
-        this.sortedEdges = new ArrayList<GraphEdge<L>>();
     }
 
     /**
@@ -42,55 +39,50 @@ public class KruskalMST<L> {
      * minimo in un grafo non orientato e pesato, con pesi degli archi non
      * negativi. L'albero restituito non è radicato, quindi è rappresentato
      * semplicemente con un sottoinsieme degli archi del grafo.
-     * 
-     * @param g
-     *              un grafo non orientato, pesato, con pesi non negativi
+     *
+     * @param g un grafo non orientato, pesato, con pesi non negativi
      * @return l'insieme degli archi del grafo g che costituiscono l'albero di
-     *         copertura minimo trovato
+     * copertura minimo trovato
      * @throw NullPointerException se il grafo g è null
      * @throw IllegalArgumentException se il grafo g è orientato, non pesato o
-     *        con pesi negativi
+     * con pesi negativi
      */
     public Set<GraphEdge<L>> computeMSP(Graph<L> g) {
-        // Controllare se il grafo è null
-        if (g == null) {
-            throw new NullPointerException("Grafo nullo");
-        }
-        // Controllare se il grafo è orientato, non pesato o con pesi negativi
-        if (g.isDirected()) {
-            throw new IllegalArgumentException("Grafo non valido");
-        }
-        // Creare un insieme vuoto per contenere gli archi dell'albero di copertura minimo
-        Set<GraphEdge<L>> mst = new HashSet<GraphEdge<L>>();
-        // Aggiungere tutti i nodi del grafo agli insiemi disgiunti
+        if (g == null) throw new NullPointerException("Il grafo non può essere null");
+        if (g.isDirected()) throw new IllegalArgumentException("Il grafo deve essere non orientato");
+        if (hasNegativeWeights(g)) throw new IllegalArgumentException("Il grafo deve avere pesi positivi");
+
+        // Ordina gli archi in ordine crescente di peso
+        List<GraphEdge<L>> sortedEdges = new ArrayList<>(g.getEdges());
+        sortedEdges.sort(Comparator.comparingDouble(GraphEdge::getWeight));
+
+        // Crea un disjoint set data structure
+        ForestDisjointSets<GraphNode<L>> disjointSets = new ForestDisjointSets<GraphNode<L>>();
         for (GraphNode<L> node : g.getNodes()) {
-            disjointSets.makeSet(node);
-        }
-        // Aggiungere tutti gli archi del grafo alla lista di archi ordinati
-        for (GraphEdge<L> edge : g.getEdges()) {
-            sortedEdges.add(edge);
-        }
-        // Ordinare la lista di archi per peso crescente
-        Collections.sort(sortedEdges, new Comparator<GraphEdge<L>>() {
-            @Override
-            public int compare(GraphEdge<L> e1, GraphEdge<L> e2) {
-                return Double.compare(e1.getWeight(), e2.getWeight());
+            if (!disjointSets.isPresent(node)) {
+                disjointSets.makeSet(node);
             }
-        });
-        // Per ogni arco nella lista ordinata
+        }
+
+        Set<GraphEdge<L>> mst = new HashSet<>();
         for (GraphEdge<L> edge : sortedEdges) {
-            // Prendere i nodi sorgente e destinazione dell'arco
-            GraphNode<L> source = edge.getNode1();
-            GraphNode<L> destination = edge.getNode2();
-            // Se i nodi appartengono a insiemi disgiunti diversi
-            if (disjointSets.findSet(source) != disjointSets.findSet(destination)) {
-                // Aggiungere l'arco all'insieme dell'albero di copertura minimo
+            GraphNode<L> u = edge.getNode1();
+            GraphNode<L> v = edge.getNode2();
+
+            // Controlla se i due nodi appartengono alla stessa componente connessa
+            if (!disjointSets.findSet(u).equals(disjointSets.findSet(v))) {
                 mst.add(edge);
-                // Unire i due insiemi disgiunti
-                disjointSets.union(source, destination);
+                disjointSets.union(u, v);
             }
         }
-        // Restituire l'insieme dell'albero di copertura minimo
+
         return mst;
+    }
+
+    private boolean hasNegativeWeights(Graph<L> g) {
+        for (GraphEdge<L> edge : g.getEdges()) {
+            if (edge.getWeight() < 0) return true;
+        }
+        return false;
     }
 }

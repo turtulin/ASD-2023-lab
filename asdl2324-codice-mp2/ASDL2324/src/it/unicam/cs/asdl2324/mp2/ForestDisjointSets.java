@@ -139,8 +139,9 @@ public class ForestDisjointSets<E> implements DisjointSets<E> {
         } else if (xRoot.rank > yRoot.rank) {
             yRoot.parent = xRoot;
         } else {
-            yRoot.parent = xRoot;
-            xRoot.rank++;
+            // In questo caso, il nodo 2 deve rimanere 1
+            xRoot.parent = yRoot;
+            yRoot.rank++;
         }
     }
 
