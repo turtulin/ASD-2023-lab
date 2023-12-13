@@ -1,7 +1,10 @@
 package it.unicam.cs.asdl2324.mp2;
 
-import java.util.*;
-
+import java.util.HashSet;
+import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * 
@@ -11,7 +14,7 @@ import java.util.*;
  * {@code ForestDisjointSets<GraphNode<L>>} per gestire una collezione di
  * insiemi disgiunti di nodi del grafo.
  * 
- * @author  Luca Tesei (template) **INSERIRE NOME, COGNOME ED EMAIL
+ * @author  Luca Tesei (template)
  *          MARTA MUSSO marta.musso@studenti.unicam.it
  * 
  * @param <L>
@@ -51,11 +54,9 @@ public class KruskalMST<L> {
         if (g == null) throw new NullPointerException("Il grafo non può essere null");
         if (g.isDirected()) throw new IllegalArgumentException("Il grafo deve essere non orientato");
         if (hasNegativeWeights(g)) throw new IllegalArgumentException("Il grafo deve avere pesi positivi");
-
         // Ordina gli archi in ordine crescente di peso
         List<GraphEdge<L>> sortedEdges = new ArrayList<>(g.getEdges());
         sortedEdges.sort(Comparator.comparingDouble(GraphEdge::getWeight));
-
         // Crea un disjoint set data structure
         ForestDisjointSets<GraphNode<L>> disjointSets = new ForestDisjointSets<GraphNode<L>>();
         for (GraphNode<L> node : g.getNodes()) {
@@ -63,12 +64,10 @@ public class KruskalMST<L> {
                 disjointSets.makeSet(node);
             }
         }
-
         Set<GraphEdge<L>> mst = new HashSet<>();
         for (GraphEdge<L> edge : sortedEdges) {
             GraphNode<L> u = edge.getNode1();
             GraphNode<L> v = edge.getNode2();
-
             // Controlla se i due nodi appartengono alla stessa componente connessa
             if (!disjointSets.findSet(u).equals(disjointSets.findSet(v))) {
                 mst.add(edge);

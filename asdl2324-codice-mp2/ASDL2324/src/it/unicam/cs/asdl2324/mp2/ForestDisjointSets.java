@@ -1,6 +1,10 @@
 package it.unicam.cs.asdl2324.mp2;
 
-import java.util.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * Implementazione dell'interfaccia <code>DisjointSets<E></code> tramite una
@@ -8,8 +12,8 @@ import java.util.*;
  * vedano le istruzioni o il libro di testo Cormen et al. (terza edizione)
  * Capitolo 21 Sezione 3.
  * 
- * @author Luca Tesei (template) **INSERIRE NOME, COGNOME ED EMAIL
- *         xxxx@studenti.unicam.it DELLO STUDENTE** (implementazione)
+ * @author  Luca Tesei (template)
+ *          MARTA MUSSO marta.musso@studenti.unicam.it (implementazione)
  *
  * @param <E>
  *                il tipo degli elementi degli insiemi disgiunti
