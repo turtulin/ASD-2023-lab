@@ -12,6 +12,23 @@ import java.util.PriorityQueue;
  * negativi. L'algoritmo implementato si avvale della classe
  * {@code ForestDisjointSets<GraphNode<L>>} per gestire una collezione di
  * insiemi disgiunti di nodi del grafo.
+ *
+ * La scelta di aggiungere metodi e classi privati alla fine della classe è motivata
+ * dalla volontà di migliorare la chiarezza, la modularità e la leggibilità del codice,
+ * soprattutto del metodo {@code computeMSP}.
+ *
+ * La presenza di questi metodi consente di suddividere logicamente il lavoro svolto
+ * nel metodo principale, {@code computeMSP}, in passaggi più gestibili e comprensibili.
+ * Ad esempio, {@code createEdgeQueue} fornisce una visione chiara della coda prioritaria
+ * degli archi, mentre {@code createDisjointSets} inizializza la struttura dati per gli insiemi
+ * disgiunti. Ciò rende il metodo principale più snello, concentrato sulla logica
+ * dell'algoritmo di Kruskal.
+ *
+ * Inoltre, l'introduzione del comparatore {@code GraphEdgeComparator} separato consente
+ * di isolare la logica di confronto degli archi, migliorando la modularità e facilitando
+ * la manutenzione. Il suo utilizzo in {@code createEdgeQueue} rende il codice più chiaro e
+ * autoesplicativo.
+ *
  * 
  * @author  Luca Tesei (template)
  *          MARTA MUSSO marta.musso@studenti.unicam.it (implementazione)

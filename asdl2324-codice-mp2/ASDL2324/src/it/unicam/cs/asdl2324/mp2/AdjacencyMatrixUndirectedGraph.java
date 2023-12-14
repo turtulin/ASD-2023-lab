@@ -37,6 +37,19 @@ import java.util.HashSet;
  * Questa classe non supporta i metodi di cancellazione di nodi e archi, ma
  * supporta tutti i metodi che usano indici, utilizzando l'indice assegnato a
  * ogni nodo in fase di inserimento.
+ *
+ *
+ * I due metodi privati aggiunti alla fine della classe,{@code getIndicesAndCheckNodes} e {@code getAdjNodes},
+ * sono stati introdotti per migliorare l'efficienza, promuovere la modularità del codice e
+ * ridurre la duplicazione di codice.
+ * Il metodo {@code getIndicesAndCheckNodes} ottiene gli indici dei nodi associati a un arco e
+ * verifica la loro presenza nel grafo, facilitando la gestione degli indici nella matrice di adiacenza.
+ * Il metodo {@code getAdjNodes} restituisce l'insieme dei nodi adiacenti a un nodo di indice specificato,
+ * migliorando l'organizzazione del codice e facilitando l'implementazione di operazioni che coinvolgono
+ * i nodi adiacenti.
+ * L'aggiunta di questi metodi privati contribuisce alla chiarezza del codice, alla sua manutenibilità e
+ * alla facilità di comprensione delle operazioni fondamentali del grafo.
+ *
  * 
  * @author  Luca Tesei (template)
  *          MARTA MUSSO marta.musso@studenti.unicam.it (implementazione)
