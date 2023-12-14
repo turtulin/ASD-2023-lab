@@ -134,7 +134,7 @@ public class ForestDisjointSets<E> implements DisjointSets<E> {
         // Ottengo i nodi corrispondenti ai rappresentanti
         Node<E> xRoot = currentElements.get(x);
         Node<E> yRoot = currentElements.get(y);
-        // Confronto i ranghi dei nodi e li unisce in base all'euristica
+        // Confronto i ranghi dei nodi e li unisco in base all'euristica
         if (xRoot.rank < yRoot.rank) {
             xRoot.parent = yRoot;
         } else if (xRoot.rank > yRoot.rank) {
@@ -148,9 +148,9 @@ public class ForestDisjointSets<E> implements DisjointSets<E> {
     @Override
     public Set<E> getCurrentRepresentatives() {
         Set<E> representatives = new HashSet<>();
-        // Itera su tutti gli elementi della mappa
+        // Itero su tutti gli elementi della mappa
         for (E e : currentElements.keySet()) {
-            // Trova il rappresentante dell'elemento e lo aggiunge all'insieme
+            // Trovo il rappresentante dell'elemento e lo aggiunge all'insieme
             representatives.add(findSet(e));
         }
         return representatives;
@@ -161,11 +161,11 @@ public class ForestDisjointSets<E> implements DisjointSets<E> {
         if (e == null) throw new NullPointerException("L'elemento è nullo");
         if (!isPresent(e)) throw new IllegalArgumentException("L'elemento non è presente in alcun nodo");
         Set<E> elements = new HashSet<>();
-        // Trova il rappresentante dell'elemento e
+        // Trovo il rappresentante dell'elemento e
         E rep = findSet(e);
-        // Itera su tutti gli elementi della mappa
+        // Itero su tutti gli elementi della mappa
         for (E x : currentElements.keySet()) {
-            // Se l'elemento ha lo stesso rappresentante di e, lo aggiunge all'insieme
+            // Se l'elemento ha lo stesso rappresentante di e, lo aggiungo all'insieme
             if (findSet(x).equals(rep)) {
                 elements.add(x);
             }
