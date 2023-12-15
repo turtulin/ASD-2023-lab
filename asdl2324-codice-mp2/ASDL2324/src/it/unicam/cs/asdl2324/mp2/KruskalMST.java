@@ -71,7 +71,7 @@ public class KruskalMST<L> {
         if (g.isDirected()) throw new IllegalArgumentException("Il grafo deve essere non orientato");
         if (hasNegativeWeights(g)) throw new IllegalArgumentException("Il grafo deve avere pesi positivi");
         PriorityQueue<GraphEdge<L>> edgeQueue = createEdgeQueue(g);
-        ForestDisjointSets<GraphNode<L>> disjointSets = createDisjointSets(g);
+        disjointSets = createDisjointSets(g);
         Set<GraphEdge<L>> mst = new HashSet<>();
         // Finché la coda non è vuota, estraggo l'arco con peso minore
         while (!edgeQueue.isEmpty()) {

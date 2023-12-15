@@ -190,8 +190,7 @@ public class AdjacencyMatrixUndirectedGraph<L> extends Graph<L> {
     public void removeNode(int i) {
         if (i < 0 || i >= nodeCount()) throw new IndexOutOfBoundsException("Indice non valido");
         // Altrimenti, ottengo il nodo corrispondente all'indice e lo rimuovo dal grafo
-        GraphNode<L> node = getNode(i);
-        removeNode(node);
+        removeNode(getNode(i));
     }
 
     @Override
@@ -236,7 +235,7 @@ public class AdjacencyMatrixUndirectedGraph<L> extends Graph<L> {
     public int getNodeIndexOf(L label) {
         if (label == null) throw new NullPointerException("Etichetta null");
         // Creo un nuovo nodo con l'etichetta data e uso il metodo getNodeIndexOf per ottenere l'indice
-        return getNodeIndexOf(new GraphNode<L>(label));
+        return getNodeIndexOf(new GraphNode<>(label));
     }
 
     @Override
@@ -264,18 +263,15 @@ public class AdjacencyMatrixUndirectedGraph<L> extends Graph<L> {
     public boolean addEdge(GraphNode<L> node1, GraphNode<L> node2) {
         if (node1 == null || node2 == null) throw new NullPointerException("Nodo null");
         // Creo un nuovo arco non pesato tra i due nodi, orientato o no a seconda del grafo
-        GraphEdge<L> edge = new GraphEdge<>(node1, node2, isDirected());
         // Aggiungo l'arco al grafo usando il metodo addEdge
-        return addEdge(edge);
+        return addEdge(new GraphEdge<>(node1, node2, isDirected()));
     }
 
     @Override
     public boolean addWeightedEdge(GraphNode<L> node1, GraphNode<L> node2, double weight) {
         if (node1 == null || node2 == null) throw new NullPointerException("Nodo null");
-        // Creo un nuovo arco pesato tra i due nodi, orientato o no a seconda del grafo
-        GraphEdge<L> edge = new GraphEdge<>(node1, node2, isDirected(), weight);
         // Aggiungo l'arco al grafo usando il metodo addEdge
-        return addEdge(edge);
+        return addEdge(new GraphEdge<>(node1, node2, isDirected(), weight));
     }
 
     @Override
@@ -295,35 +291,27 @@ public class AdjacencyMatrixUndirectedGraph<L> extends Graph<L> {
     @Override
     public boolean addEdge(int i, int j) {
         if (i < 0 || i >= nodeCount() || j < 0 || j >= nodeCount()) throw new IndexOutOfBoundsException("Indice non valido");
-        // Ottengo i nodi corrispondenti agli indici usando il metodo getNode
-        GraphNode<L> node1 = getNode(i);
-        GraphNode<L> node2 = getNode(j);
         // Aggiungo l'arco tra i due nodi usando il metodo addEdge
-        return addEdge(node1, node2);
+        return addEdge(getNode(i), getNode(j));
     }
 
     @Override
     public boolean addWeightedEdge(int i, int j, double weight) {
         if (i < 0 || i >= nodeCount() || j < 0 || j >= nodeCount()) throw new IndexOutOfBoundsException("Indice non valido");
-        // Ottengo i nodi corrispondenti agli indici usando il metodo getNode
-        GraphNode<L> node1 = getNode(i);
-        GraphNode<L> node2 = getNode(j);
         // Aggiungo l'arco pesato tra i due nodi usando il metodo addWeightedEdge
-        return addWeightedEdge(node1, node2, weight);
+        return addWeightedEdge(getNode(i), getNode(j), weight);
     }
 
     @Override
     public void removeEdge(GraphEdge<L> edge) {
         if (edge == null) throw new NullPointerException("Arco null");
         int[] indices = getIndicesAndCheckNodes(edge);
-        int i = indices[0];
-        int j = indices[1];
         // Rimuovo l'arco dalla matrice di adiacenza, se esiste
-        if (matrix.get(i).get(j) != null) {
-            matrix.get(i).set(j, null);
+        if (matrix.get(indices[0]).get(indices[1]) != null) {
+            matrix.get(indices[0]).set(indices[1], null);
             // Se il grafo non è orientato, rimuovo anche l'arco simmetrico
             if (!isDirected()) {
-                matrix.get(j).set(i, null);
+                matrix.get(indices[1]).set(indices[0], null);
             }
         } else throw new IllegalArgumentException("Arco inesistente");
     }
@@ -331,10 +319,8 @@ public class AdjacencyMatrixUndirectedGraph<L> extends Graph<L> {
     @Override
     public void removeEdge(GraphNode<L> node1, GraphNode<L> node2) {
         if (node1 == null || node2 == null) throw new NullPointerException("Nodo null");
-        // Creo un nuovo arco tra i due nodi, orientato o no a seconda del grafo
-        GraphEdge<L> edge = new GraphEdge<>(node1, node2, isDirected());
         // Rimuovo l'arco uguale a quello creato usando il metodo removeEdge
-        removeEdge(edge);
+        removeEdge(new GraphEdge<>(node1, node2, isDirected()));
     }
 
     @Override
@@ -355,20 +341,15 @@ public class AdjacencyMatrixUndirectedGraph<L> extends Graph<L> {
     public GraphEdge<L> getEdge(GraphEdge<L> edge) {
         if (edge == null) throw new NullPointerException("Arco null");
         int[] indices = getIndicesAndCheckNodes(edge);
-        int i = indices[0];
-        int j = indices[1];
         // Restituisco l'arco nella matrice di adiacenza, se esiste, o null altrimenti
-        return matrix.get(i).get(j);
+        return matrix.get(indices[0]).get(indices[1]);
     }
 
     @Override
     public GraphEdge<L> getEdge(GraphNode<L> node1, GraphNode<L> node2) {
         if (node1 == null || node2 == null) throw new NullPointerException("Nodo null");
         if (!nodesIndex.containsKey(node1) || !nodesIndex.containsKey(node2)) throw new IllegalArgumentException("Nodo inesistente");
-        // Creo un nuovo arco tra i due nodi, orientato o no a seconda del grafo
-        GraphEdge<L> edge = new GraphEdge<>(node1, node2, isDirected());
-        // Restituisco l'arco uguale a quello creato usando il metodo getEdge
-        return getEdge(edge);
+        return getEdge(new GraphEdge<>(node1, node2, isDirected()));
     }
 
     @Override
@@ -498,9 +479,7 @@ public class AdjacencyMatrixUndirectedGraph<L> extends Graph<L> {
         // Se uno dei due nodi non esiste nel grafo, lancio un'eccezione
         if (!nodesIndex.containsKey(node1) || !nodesIndex.containsKey(node2)) throw new IllegalArgumentException("Nodo inesistente");
         // Ottengo gli indici dei nodi
-        int i = nodesIndex.get(node1);
-        int j = nodesIndex.get(node2);
-        return new int[]{i, j};
+        return new int[]{nodesIndex.get(node1), nodesIndex.get(node2)};
     }
 
     /**
