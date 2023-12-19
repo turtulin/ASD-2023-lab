@@ -23,10 +23,6 @@ import java.util.ArrayList;
  * disgiunti. Ciò rende il metodo principale più snello, concentrato sulla logica
  * dell'algoritmo di Kruskal.
  *
- * Inoltre, l'introduzione del comparatore {@code GraphEdgeComparator} separato consente
- * di isolare la logica di confronto degli archi, migliorando la modularità e facilitando
- * la manutenzione. Il suo utilizzo in {@code createEdgeQueue} rende il codice più chiaro e
- * autoesplicativo.
  *
  * 
  * @author  Luca Tesei (template)
@@ -67,8 +63,8 @@ public class KruskalMST<L> {
      */
     public Set<GraphEdge<L>> computeMSP(Graph<L> g) {
         if (g == null) throw new NullPointerException("Il grafo è null");
-        if (g.isDirected()) throw new IllegalArgumentException("Il grafo è orientato");
         if (hasNegativeWeights(g)) throw new IllegalArgumentException("Il grafo ha pesi negativi");
+        if (g.isDirected()) throw new IllegalArgumentException("Il grafo è orientato");
         ArrayList<GraphEdge<L>> edgeQueue = createEdgeQueue(g);
         disjointSets = createDisjointSets(g);
         Set<GraphEdge<L>> mst = new HashSet<>();

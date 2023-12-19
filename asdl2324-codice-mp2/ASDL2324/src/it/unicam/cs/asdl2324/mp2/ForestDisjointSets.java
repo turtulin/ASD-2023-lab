@@ -10,6 +10,10 @@ import java.util.HashSet;
  * foresta di alberi ognuno dei quali rappresenta un insieme disgiunto. Si
  * vedano le istruzioni o il libro di testo Cormen et al. (terza edizione)
  * Capitolo 21 Sezione 3.
+ *
+ * In questa classe ho deciso di non aggiungere metodi o variabili private
+ * perchè i metodi presenti sono a mio parere sufficienti per rappresentare
+ * efficientemente la struttura dati.
  * 
  * @author  Luca Tesei (template)
  *          MARTA MUSSO marta.musso@studenti.unicam.it (implementazione)
@@ -76,7 +80,6 @@ public class ForestDisjointSets<E> implements DisjointSets<E> {
     @Override
     public boolean isPresent(E e) {
         if (e == null) throw new NullPointerException("Elemento null");
-        // Controllo se la mappa contiene la chiave e
         return currentElements.containsKey(e);
     }
 
@@ -88,7 +91,6 @@ public class ForestDisjointSets<E> implements DisjointSets<E> {
     public void makeSet(E e) {
         if (e == null) throw new NullPointerException("Elemento  null");
         if (isPresent(e)) throw new IllegalArgumentException("Nodo già presente");
-        // Creo un nuovo nodo con l'elemento e
         // Aggiungo il nodo alla mappa con la chiave e
         currentElements.put(e, new Node<>(e));
     }
@@ -101,9 +103,7 @@ public class ForestDisjointSets<E> implements DisjointSets<E> {
     @Override
     public E findSet(E e) {
         if (e == null) throw new NullPointerException("Elemento null");
-        // Ottengo il nodo corrispondente all'elemento e dalla mappa
         Node<E> node = currentElements.get(e);
-        // Se il nodo non esiste, ritorno null
         if (node == null) return null;
         // Se il nodo è la radice, restituisco il suo elemento
         if (node.parent == node) return node.item;
@@ -127,14 +127,13 @@ public class ForestDisjointSets<E> implements DisjointSets<E> {
         if (e1 == null || e2 == null) throw new NullPointerException("Elemento nullo nella foresta");
         if (!isPresent(e1) || !isPresent(e2)) throw new IllegalArgumentException("Elemento non presente nella foresta");
         if (findSet(e1).equals(findSet(e2))) return;
-        // Ottengo i nodi corrispondenti ai rappresentanti
         Node<E> xRoot = currentElements.get(findSet(e1));
         Node<E> yRoot = currentElements.get(findSet(e2));
         // Confronto i ranghi dei nodi e li unisco in base all'euristica
-        if (xRoot.rank < yRoot.rank) {
-            xRoot.parent = yRoot;
-        } else if (xRoot.rank > yRoot.rank) {
+        if (xRoot.rank > yRoot.rank) {
             yRoot.parent = xRoot;
+        } else if (xRoot.rank < yRoot.rank) {
+            xRoot.parent = yRoot;
         } else {
             xRoot.parent = yRoot;
             yRoot.rank++;
@@ -144,7 +143,6 @@ public class ForestDisjointSets<E> implements DisjointSets<E> {
     @Override
     public Set<E> getCurrentRepresentatives() {
         Set<E> representatives = new HashSet<>();
-        // Itero su tutti gli elementi della mappa
         for (E e : currentElements.keySet()) {
             // Trovo il rappresentante dell'elemento e lo aggiunge all'insieme
             representatives.add(findSet(e));
@@ -157,9 +155,7 @@ public class ForestDisjointSets<E> implements DisjointSets<E> {
         if (e == null) throw new NullPointerException("L'elemento è nullo");
         if (!isPresent(e)) throw new IllegalArgumentException("L'elemento non è presente in alcun nodo");
         Set<E> elements = new HashSet<>();
-        // Trovo il rappresentante dell'elemento e
         E rep = findSet(e);
-        // Itero su tutti gli elementi della mappa
         for (E x : currentElements.keySet()) {
             // Se l'elemento ha lo stesso rappresentante di e, lo aggiungo all'insieme
             if (findSet(x).equals(rep)) {
