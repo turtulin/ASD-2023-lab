@@ -4,7 +4,6 @@
 package it.unicam.cs.asdl2324.mp2;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -123,9 +122,15 @@ public class AdjacencyMatrixUndirectedGraph<L> extends Graph<L> {
         if (nodesIndex.containsKey(node)) return false;
         // Aggiungo il nodo alla mappa con l'indice corrispondente al numero di nodi attuali
         nodesIndex.put(node, nodeCount());
-        // Aggiungo una nuova riga alla matrice di adiacenza, inizializzata con elementi null
-        matrix.add(new ArrayList<>(Collections.nCopies(nodeCount(), null)));
-        // Aggiungo un nuovo elemento null a ogni riga esistente della matrice di adiacenza
+        // Crea una nuova lista vuota
+        ArrayList<GraphEdge<L>> newRow = new ArrayList<>();
+        // Aggiungi un elemento nullo per ogni iterazione del ciclo for
+        for (int i = 0; i < nodeCount(); i++) {
+            newRow.add(null);
+        }
+        // Aggiungi la nuova riga alla matrice
+        matrix.add(newRow);
+        // Aggiungi un elemento nullo alla fine di ogni riga esistente
         for (int i = 0; i < nodeCount() - 1; i++) {
             matrix.get(i).add(null);
         }

@@ -2,8 +2,7 @@ package it.unicam.cs.asdl2324.mp2;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Comparator;
-import java.util.PriorityQueue;
+import java.util.ArrayList;
 
 /**
  * 
@@ -70,15 +69,15 @@ public class KruskalMST<L> {
         if (g == null) throw new NullPointerException("Il grafo non può essere null");
         if (g.isDirected()) throw new IllegalArgumentException("Il grafo deve essere non orientato");
         if (hasNegativeWeights(g)) throw new IllegalArgumentException("Il grafo deve avere pesi positivi");
-        PriorityQueue<GraphEdge<L>> edgeQueue = createEdgeQueue(g);
+        ArrayList<GraphEdge<L>> edgeQueue = createEdgeQueue(g);
         disjointSets = createDisjointSets(g);
         Set<GraphEdge<L>> mst = new HashSet<>();
         // Finché la coda non è vuota, estraggo l'arco con peso minore
         while (!edgeQueue.isEmpty()) {
-            GraphEdge<L> edge = edgeQueue.poll();
+            GraphEdge<L> edge = edgeQueue.remove(0);
             GraphNode<L> node1 = edge.getNode1();
             GraphNode<L> node2 = edge.getNode2();
-            // Se i due nodi non sono nella stessa componente connessa, aggiungo l'arco all'albero e unisci i due insiemi
+            // Se i due nodi non sono nella stessa componente connessa, aggiungo l'arco all'albero e unisco i due insiemi
             if (!areConnected(disjointSets, node1, node2)) {
                 mst.add(edge);
                 disjointSets.union(node1, node2);
@@ -93,11 +92,27 @@ public class KruskalMST<L> {
      * @param graph Il grafo di input.
      * @return Una coda prioritaria degli archi del grafo.
      */
-    private PriorityQueue<GraphEdge<L>> createEdgeQueue(Graph<L> graph) {
-        Comparator<GraphEdge<L>> comparator = new GraphEdgeComparator<>();
-        // Creazione e inizializzazione della coda prioritaria con il comparatore
-        PriorityQueue<GraphEdge<L>> edgeQueue = new PriorityQueue<>(comparator);
+    private ArrayList<GraphEdge<L>> createEdgeQueue(Graph<L> graph) {
+        // Creazione della coda prioritaria senza comparatore
+        ArrayList<GraphEdge<L>> edgeQueue = new ArrayList<>();
         edgeQueue.addAll(graph.getEdges());
+        // Ordinamento della coda prioritaria usando il selection sort
+        int n = edgeQueue.size();
+        for (int i = 0; i < n - 1; i++) {
+            // Trovo l'arco con il peso minimo tra i e n - 1
+            int minIndex = i;
+            GraphEdge<L> minEdge = edgeQueue.get(i);
+            for (int j = i + 1; j < n; j++) {
+                GraphEdge<L> currentEdge = edgeQueue.get(j);
+                if (currentEdge.getWeight() < minEdge.getWeight()) {
+                    minIndex = j;
+                    minEdge = currentEdge;
+                }
+            }
+            // Scambio l'arco con il peso minimo con l'arco in posizione i
+            edgeQueue.set(minIndex, edgeQueue.get(i));
+            edgeQueue.set(i, minEdge);
+        }
         return edgeQueue;
     }
 
@@ -141,26 +156,5 @@ public class KruskalMST<L> {
             if (edge.getWeight() < 0) return true;
         }
         return false;
-    }
-
-    /**
-     * Comparatore per gli archi del grafo basato sul peso.
-     *
-     * @param <L> Il tipo di dati memorizzato nei nodi del grafo.
-     */
-    private class GraphEdgeComparator<L> implements Comparator<GraphEdge<L>> {
-        /**
-         * Confronta due archi del grafo basandosi sul peso.
-         *
-         * @param e1 Il primo arco del grafo.
-         * @param e2 Il secondo arco del grafo.
-         * @return Un numero negativo, zero o positivo a seconda che il peso del primo arco
-         *         sia minore, uguale o maggiore del peso del secondo arco.
-         */
-        @Override
-        public int compare(GraphEdge<L> e1, GraphEdge<L> e2) {
-            // Confronto basato sul peso degli archi
-            return Double.compare(e1.getWeight(), e2.getWeight());
-        }
     }
 }

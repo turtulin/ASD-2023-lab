@@ -89,9 +89,8 @@ public class ForestDisjointSets<E> implements DisjointSets<E> {
         if (e == null) throw new NullPointerException("Elemento  null");
         if (isPresent(e)) throw new IllegalArgumentException("Nodo già presente");
         // Creo un nuovo nodo con l'elemento e
-        Node<E> node = new Node<>(e);
         // Aggiungo il nodo alla mappa con la chiave e
-        currentElements.put(e, node);
+        currentElements.put(e, new Node<>(e));
     }
 
     /*
