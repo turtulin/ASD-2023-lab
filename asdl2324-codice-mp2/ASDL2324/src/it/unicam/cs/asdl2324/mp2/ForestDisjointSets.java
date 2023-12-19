@@ -126,13 +126,10 @@ public class ForestDisjointSets<E> implements DisjointSets<E> {
     public void union(E e1, E e2) {
         if (e1 == null || e2 == null) throw new NullPointerException("Elemento nullo nella foresta");
         if (!isPresent(e1) || !isPresent(e2)) throw new IllegalArgumentException("Elemento non presente nella foresta");
-        // Trovo i rappresentanti degli elementi e1 ed e2
-        E x = findSet(e1);
-        E y = findSet(e2);
-        if (x.equals(y)) return;
+        if (findSet(e1).equals(findSet(e2))) return;
         // Ottengo i nodi corrispondenti ai rappresentanti
-        Node<E> xRoot = currentElements.get(x);
-        Node<E> yRoot = currentElements.get(y);
+        Node<E> xRoot = currentElements.get(findSet(e1));
+        Node<E> yRoot = currentElements.get(findSet(e2));
         // Confronto i ranghi dei nodi e li unisco in base all'euristica
         if (xRoot.rank < yRoot.rank) {
             xRoot.parent = yRoot;

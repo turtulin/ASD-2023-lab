@@ -66,9 +66,9 @@ public class KruskalMST<L> {
      * con pesi negativi
      */
     public Set<GraphEdge<L>> computeMSP(Graph<L> g) {
-        if (g == null) throw new NullPointerException("Il grafo non può essere null");
-        if (g.isDirected()) throw new IllegalArgumentException("Il grafo deve essere non orientato");
-        if (hasNegativeWeights(g)) throw new IllegalArgumentException("Il grafo deve avere pesi positivi");
+        if (g == null) throw new NullPointerException("Il grafo è null");
+        if (g.isDirected()) throw new IllegalArgumentException("Il grafo è orientato");
+        if (hasNegativeWeights(g)) throw new IllegalArgumentException("Il grafo ha pesi negativi");
         ArrayList<GraphEdge<L>> edgeQueue = createEdgeQueue(g);
         disjointSets = createDisjointSets(g);
         Set<GraphEdge<L>> mst = new HashSet<>();
@@ -117,6 +117,19 @@ public class KruskalMST<L> {
     }
 
     /**
+     * Verifica se il grafo contiene archi con pesi negativi.
+     *
+     * @param graph Il grafo di input.
+     * @return True se il grafo contiene archi con pesi negativi, altrimenti false.
+     */
+    private boolean hasNegativeWeights(Graph<L> graph) {
+        for (GraphEdge<L> edge : graph.getEdges()) {
+            if (edge.getWeight() < 0) return true;
+        }
+        return false;
+    }
+
+    /**
      * Crea la struttura dati degli insiemi disgiunti per i nodi del grafo.
      *
      * @param graph Il grafo di input.
@@ -143,18 +156,5 @@ public class KruskalMST<L> {
      */
     private boolean areConnected(ForestDisjointSets<GraphNode<L>> disjointSets, GraphNode<L> node1, GraphNode<L> node2) {
         return disjointSets.findSet(node1).equals(disjointSets.findSet(node2));
-    }
-
-    /**
-     * Verifica se il grafo contiene archi con pesi negativi.
-     *
-     * @param graph Il grafo di input.
-     * @return True se il grafo contiene archi con pesi negativi, altrimenti false.
-     */
-    private boolean hasNegativeWeights(Graph<L> graph) {
-        for (GraphEdge<L> edge : graph.getEdges()) {
-            if (edge.getWeight() < 0) return true;
-        }
-        return false;
     }
 }
