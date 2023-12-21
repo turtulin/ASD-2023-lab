@@ -92,24 +92,42 @@ public class KruskalMST<L> {
         // Creazione della coda prioritaria senza comparatore
         ArrayList<GraphEdge<L>> edgeQueue = new ArrayList<>();
         edgeQueue.addAll(graph.getEdges());
-        // Ordinamento della coda prioritaria usando il selection sort
+        // Ordinamento della coda prioritaria usando l'heap sort
         int n = edgeQueue.size();
-        for (int i = 0; i < n - 1; i++) {
-            // Trovo l'arco con il peso minimo tra i e n - 1
-            int minIndex = i;
-            GraphEdge<L> minEdge = edgeQueue.get(i);
-            for (int j = i + 1; j < n; j++) {
-                GraphEdge<L> currentEdge = edgeQueue.get(j);
-                if (currentEdge.getWeight() < minEdge.getWeight()) {
-                    minIndex = j;
-                    minEdge = currentEdge;
-                }
-            }
-            // Scambio l'arco con il peso minimo con l'arco in posizione i
-            edgeQueue.set(minIndex, edgeQueue.get(i));
-            edgeQueue.set(i, minEdge);
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            heapify(edgeQueue, n, i);
+        }
+        for (int i = n - 1; i > 0; i--) {
+            GraphEdge<L> temp = edgeQueue.get(0);
+            edgeQueue.set(0, edgeQueue.get(i));
+            edgeQueue.set(i, temp);
+            heapify(edgeQueue, i, 0);
         }
         return edgeQueue;
+    }
+
+    /**
+     * Metodo ausiliario per mantenere la proprietà di heap.
+     * @param edgeQueue la coda prioritaria degli archi del grafo
+     * @param n la dimensione dell'heap
+     * @param i l'indice del nodo corrente
+     */
+    private void heapify(ArrayList<GraphEdge<L>> edgeQueue, int n, int i) {
+        int largest = i;
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+        if (left < n && edgeQueue.get(left).getWeight() > edgeQueue.get(largest).getWeight()) {
+            largest = left;
+        }
+        if (right < n && edgeQueue.get(right).getWeight() > edgeQueue.get(largest).getWeight()) {
+            largest = right;
+        }
+        if (largest != i) {
+            GraphEdge<L> swap = edgeQueue.get(i);
+            edgeQueue.set(i, edgeQueue.get(largest));
+            edgeQueue.set(largest, swap);
+            heapify(edgeQueue, n, largest);
+        }
     }
 
     /**
