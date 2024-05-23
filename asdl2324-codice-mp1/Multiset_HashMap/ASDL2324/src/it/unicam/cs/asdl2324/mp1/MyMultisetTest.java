@@ -11,12 +11,6 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-/**
- * Classe di test per MyMultiset
- * 
- * @author Luca Tesei
- *
- */
 public class MyMultisetTest {
 
     @Test
