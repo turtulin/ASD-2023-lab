@@ -3,30 +3,6 @@ package it.unicam.cs.asdl2324.mp1;
 import java.util.Iterator;
 import java.util.Set;
 
-/**
- * Un multinsieme (chiamato anche bag) è un insieme in cui gli elementi hanno un
- * certo numero di occorrenze (detto anche molteplicità o frequenza). Tale
- * numero può essere zero, il che è equivalente a dire che l'elemento non
- * appartiene al multinsieme. Se tale numero è invece un intero positivo
- * {@code n} allora l'elemento è presente {@code n} volte nel multinsieme. La
- * molteplicità non può essere negativa.
- * 
- * Come nel classico insieme, in un multinsieme gli elementi non sono ordinati
- * né indicizzati.
- * 
- * Non è possibile inserire {@code null} in un multinsieme.
- *
- * Poiché la molteplicità è rappresentata con un {@code int}, un multinsieme non
- * può mai contenere più di {@code Integer.MAX_VALUE} occorrenze per ogni
- * elemento.
- * 
- * @author Luca Tesei
- *
- * @param <E>
- *                il tipo di elmenti del multinsieme. Se un multinsieme deve
- *                contenere oggetti di tipo eterogeneo allora si può utilizzare
- *                il tipo {@code Object}.
- */
 public interface Multiset<E> {
     /**
      * Restituisce il numero totale di elementi in questo multinsieme. Ad
