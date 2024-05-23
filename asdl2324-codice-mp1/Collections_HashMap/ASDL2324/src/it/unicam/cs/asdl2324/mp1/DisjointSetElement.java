@@ -1,19 +1,5 @@
-/**
- * 
- */
 package it.unicam.cs.asdl2324.mp1;
 
-/**
- * Interfaccia che astrae le funzionalità richieste ad un oggetto per essere
- * inserito in una collezione di insiemi disgiunti così come descritta
- * dall'interface {@DisjointSets}.
- * 
- * Le operazioni richieste sono semplicemente dei metodi setter/getter che la
- * classe che implementa deve fornire.
- * 
- * @author Luca Tesei
- * 
- */
 public interface DisjointSetElement {
 
     /**
