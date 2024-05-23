@@ -7,12 +7,6 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-/**
- * Classe di test per i metodi della classe KruskalMST.
- * 
- * @author Luca Tesei
- *
- */
 class KruskalMSTTest {
 
     @Test
