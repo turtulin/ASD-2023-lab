@@ -6,12 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Set;
 import java.util.HashSet;
 
-/**
- * Classe di test per LinkedListDisjointSets
- * 
- * @author Luca Tesei
- *
- */
 class LinkedListDisjointSetsTest {
 
     @Test
