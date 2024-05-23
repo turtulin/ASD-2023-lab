@@ -7,12 +7,6 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-/**
- * Classe di test per la classe ForestDisjointSets.
- * 
- * @author Luca Tesei
- *
- */
 class ForestDisjointSetsTest {
 
     @Test
