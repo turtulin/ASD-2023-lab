@@ -1,19 +1,7 @@
-/**
- * 
- */
 package it.unicam.cs.asdl2223.es10;
 
-/**
- * Implementa una funzione di hash primaria con il metodo della moltiplicazione.
- * 
- * @author Luca Tesei
- *
- */
 public class MultiplicationPrimaryHashFunction implements PrimaryHashFunction {
 
-    /* (non-Javadoc)
-     * @see it.unicam.cs.asdl1920.solhash.PrimaryHashFunction#hash(int, int)
-     */
     @Override
     public int hash(int key, int m) {
         double phi = (Math.sqrt(5) - 1) / 2;
