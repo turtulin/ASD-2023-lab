@@ -7,11 +7,6 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-/**
- * Classe di test per la classe AdjacencyMatrixUndirectedGraph.
- * 
- * @author Luca Tesei
- */
 class AdjacencyMatrixUndirectedGraphTest {
 
     @Test
