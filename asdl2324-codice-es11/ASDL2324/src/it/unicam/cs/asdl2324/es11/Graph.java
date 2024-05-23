@@ -1,30 +1,7 @@
-/**
- * 
- */
 package it.unicam.cs.asdl2324.es11;
 
 import java.util.Set;
 
-/**
- * Classe astratta per un generico grafo i cui nodi sono etichettati con
- * elementi della classe {@code L}. Le classi {@code GraphNode<L>} e
- * {@code GraphEdge<L>} definiscono le operazioni generiche sui nodi e sugli
- * archi.
- * 
- * Il grafo può essere orientato o non orientato, la sottoclasse che estende
- * questa classe astratta specifica questo aspetto. Tale informazione è
- * disponibile tramite il metodo {@code isDirected()}.
- * 
- * Le etichette dei nodi sono obbligatorie ed uniche, cioè un nodo non può avere
- * etichetta nulla e due nodi con la stessa etichetta sono lo stesso nodo.
- * 
- * 
- * @author Luca Tesei
- * 
- * @param <L>
- *                etichette dei nodi
- *
- */
 public abstract class Graph<L> {
 
     /**
