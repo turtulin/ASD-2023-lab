@@ -2,26 +2,6 @@ package it.unicam.cs.asdl2324.mp2;
 
 import java.util.Set;
 
-/**
- * Una classe che implementa questa interfaccia è in grado di gestire una
- * collezione di insiemi disgiunti.
- * 
- * Le operazioni fondamentali sono la creazione di un nuovo insieme singoletto a
- * partire da un elemento, la ricerca dell'insieme disgiunto di cui fa parte un
- * elemento e l'unione di due insiemi disgiunti.
- * 
- * In ogni momento ad ogni insieme disgiunto presente è associato un elemento
- * rappresentante. Il rappresentante di un insieme singoletto è l'unico
- * elemento, mentre il rappresentante di un insieme disgiunto con più di un
- * elemento può essere qualsiasi elemento dell'insieme disgiunto. Il
- * rappresentante può cambiare in seguito all'operazione di unione.
- * 
- * @author Luca Tesei
- * 
- * @param <E>
- *                il tipo degli elementi degli insiemi disgiunti
- *
- */
 public interface DisjointSets<E> {
 
     /**
